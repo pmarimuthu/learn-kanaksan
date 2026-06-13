@@ -91,6 +91,10 @@ export default defineConfig({
 
   /* ── Global <head> tags ──────────────────────────────────── */
   head: [
+    // Favicon
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+    ['link', { rel: 'alternate icon', href: '/favicon.svg' }],
+
     // Viewport & theme
     ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0, viewport-fit=cover' }],
     ['meta', { name: 'theme-color', content: '#3a7bd5' }],
