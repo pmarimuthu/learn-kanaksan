@@ -71,11 +71,11 @@ function registerRefs(md: MarkdownIt) {
 }
 
 const SITE_URL  = 'https://learn.kanaksan.com'
-const BASE_PATH = '/11/physics'
-const FULL_URL  = SITE_URL + BASE_PATH
+const BASE_PATH = ''
+const FULL_URL  = SITE_URL
 
 export default defineConfig({
-  base: BASE_PATH + '/',
+  base: '/',
   lang: 'en-IN',
   title: 'Physics Companion',
   titleTemplate: ':title · Class 11 Physics NCERT',

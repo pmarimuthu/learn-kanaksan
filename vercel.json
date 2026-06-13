@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/11/physics/:path*", "destination": "/:path*" }
+  ]
+}
