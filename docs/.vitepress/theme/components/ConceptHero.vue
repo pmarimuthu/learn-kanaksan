@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import WasmHero from './WasmHero.vue'
+import FeelHero from './FeelHero.vue'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps<{ type: string; caption?: string; open?: boolean }>()
@@ -48,13 +49,15 @@ const CAPTIONS: Record<string, string> = {
 }
 const cap = computed(() => props.caption ?? CAPTIONS[props.type] ?? '')
 const isOpen     = ref(props.open ?? true)
-const tab        = ref<'svg'|'wasm'|'three'>('svg')
+const tab        = ref<'svg'|'wasm'|'three'|'feel'>('svg')
 const isFullscreen = ref(false)
 
 // Only show the Explore tab for types that have a WASM module built
 const WASM_TYPES = new Set(['si-units', 'projectile-motion'])
+const FEEL_TYPES = new Set(['si-units', 'significant-figures', 'dimensions', 'dimensional-analysis'])
 const hasWasm = computed(() => WASM_TYPES.has(props.type))
 const has3D   = computed(() => props.type === 'projectile-motion')
+const hasFeel = computed(() => FEEL_TYPES.has(props.type))
 
 function onKey(e: KeyboardEvent) {
   if (e.key === 'Escape' && isFullscreen.value) isFullscreen.value = false
@@ -88,14 +91,16 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
         </button>
       </div>
       <div v-show="isOpen" class="ch-body">
-        <div v-if="hasWasm" class="ch-tabs">
+        <div v-if="hasWasm || hasFeel" class="ch-tabs">
           <button :class="['ch-tab', { active: tab === 'svg' }]" @click="tab = 'svg'">Watch</button>
-          <button :class="['ch-tab', { active: tab === 'wasm' }]" @click="tab = 'wasm'">Explore</button>
+          <button v-if="hasWasm" :class="['ch-tab', { active: tab === 'wasm' }]" @click="tab = 'wasm'">Explore</button>
           <button v-if="has3D" :class="['ch-tab', { active: tab === 'three' }]" @click="tab = 'three'">3D Scene</button>
+          <button v-if="hasFeel" :class="['ch-tab', { active: tab === 'feel' }]" @click="tab = 'feel'">Feel</button>
         </div>
       <WasmHero v-if="hasWasm && (tab === 'wasm' || tab === 'three')"
                 :type="type" :active-tab="tab" />
-      <svg v-show="!hasWasm || tab === 'svg'" viewBox="0 0 360 150" role="img" :aria-label="cap" xmlns="http://www.w3.org/2000/svg">
+      <FeelHero v-if="hasFeel && tab === 'feel'" :type="type" />
+      <svg v-show="tab === 'svg'" viewBox="0 0 360 150" role="img" :aria-label="cap" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <marker id="ahR" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#e2483d"/></marker>
           <marker id="ahB" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#2f6fd0"/></marker>
