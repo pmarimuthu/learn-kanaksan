@@ -443,18 +443,18 @@ onUnmounted(()=>{
     </div>
     <div v-else-if="status === 'error'" class="wh-msg wh-err">⚠ {{ errMsg }}</div>
     <template v-else>
-      <!-- 2D WASM canvas -->
+      
       <canvas ref="canvas"
               v-show="activeTab !== 'three'"
               :class="['wh-canvas', type === 'projectile-motion' ? 'wh-canvas-pm' : '']"
               aria-label="Interactive WASM physics simulation" />
-      <!-- Three.js 3D canvas (projectile-motion only) -->
+      
       <canvas v-if="type === 'projectile-motion'"
               ref="threeCanvas"
               v-show="activeTab === 'three'"
               class="wh-canvas wh-canvas-three"
               aria-label="3D projectile motion scene" />
-      <!-- Sliders (both Explore + 3D tabs) -->
+      
       <div v-if="type === 'projectile-motion'" class="pm-controls">
         <label class="pm-ctrl">
           <span class="pm-ctrl-val">θ = {{ pmAngle }}°</span>

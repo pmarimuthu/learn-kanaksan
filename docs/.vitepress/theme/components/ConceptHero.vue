@@ -4,61 +4,21 @@ import FeelHero from './FeelHero.vue'
 import MeasurementLab from './labs/MeasurementLab.vue'
 import SpeedDistanceLab from './labs/SpeedDistanceLab.vue'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import CAPTIONS from '../data/concept-captions.json'
+import conceptConfig from '../data/concept-config.json'
 
 const props = defineProps<{ type: string; caption?: string; open?: boolean }>()
 
-const CAPTIONS: Record<string, string> = {
-  'si-units': 'Every measurement is built from the seven SI base units.',
-  'significant-figures': 'Leading zeros do not count; the digits carrying real information are the significant figures.',
-  'dimensions': 'Every quantity is a product of the base dimensions M, L and T.',
-  'dimensional-analysis': 'An equation can only be correct if both sides have exactly the same dimensions.',
-  'displacement': 'Path length counts every step; displacement is the straight-line shift from start to finish.',
-  'velocity-speed': 'Velocity carries direction — same speed, opposite direction means opposite velocity.',
-  'acceleration': 'Acceleration is the rate of change of velocity — a braking car accelerates backward.',
-  'equations-of-motion': 'The area under a v–t graph equals displacement; the slope equals acceleration.',
-  'relative-velocity': 'The velocity of A relative to B is simply the vector difference v_A − v_B.',
-  'scalars-and-vectors': 'A scalar has magnitude only; a vector has both magnitude and direction.',
-  'vector-addition': 'Vectors add tip-to-tail — the resultant reaches from the start of the first to the tip of the last.',
-  'vector-components': 'Any vector splits into perpendicular components: Ax = A cosθ and Ay = A sinθ.',
-  'unit-vectors': 'i, j, k are unit vectors along the x, y, z axes — each has magnitude exactly 1.',
-  'relative-velocity-2d': 'The velocity of A relative to B is the vector difference v_A − v_B in 2D.',
-  'projectile-motion': 'Horizontal velocity stays constant; vertical velocity changes due to gravity — giving a parabolic path.',
-  'uniform-circular-motion': 'Speed is constant but velocity direction changes — centripetal acceleration always points to the centre.',
-  'inertia-first-law': 'With no net force, the ball keeps gliding at constant velocity.',
-  'momentum-second-law': 'A steady force makes the mass speed up — it accelerates.',
-  'impulse': 'A soft, longer contact means a smaller force for the same change in momentum.',
-  'third-law': 'Equal and opposite forces — one acting on each body.',
-  'conservation-of-momentum': 'From rest, the light cart shoots off fast and the heavy one drifts slowly.',
-  'equilibrium': 'Two rope tensions and the weight cancel out, so the load hangs still.',
-  'friction': 'Friction (orange) always opposes the applied push (blue).',
-  'circular-motion': 'Velocity stays tangent; the centripetal force always points to the centre.',
-  'work': 'Work = force x displacement x cosθ — only the component along displacement counts.',
-  'kinetic-energy': 'Kinetic energy grows as the square of speed — double the speed, quadruple the KE.',
-  'potential-energy': 'Gravitational PE = mgh — stored energy that converts to kinetic energy as the object falls.',
-  'conservation-of-energy': 'As the ball rolls down, PE converts to KE — total mechanical energy stays constant.',
-  'power': 'Power is work per unit time — same work done faster means more power.',
-  'collisions': 'Momentum is always conserved; kinetic energy is conserved only in elastic collisions.',
-  'centre-of-mass': 'The centre of mass lies closer to the heavier mass — it is the mass-weighted average position.',
-  'torque': 'Torque = force x perpendicular distance from pivot — larger lever arm means larger torque.',
-  'angular-momentum': 'When moment of inertia decreases, angular speed increases to conserve L = Iω.',
-  'moment-of-inertia': 'Solid cylinder (I = 1/2 MR^2) rotates more easily than hollow cylinder (I = MR^2).',
-  'rolling-motion': 'Rolling combines translation and rotation — contact point has zero velocity.',
-  'universal-law': 'Gravitational force falls off as 1/r^2 — double the distance, quarter the force.',
-  'gravitational-field': 'Field lines point toward the mass; they are closer together where the field is stronger.',
-  'escape-velocity': 'At escape velocity, kinetic energy equals gravitational PE — total energy is zero.',
-  'satellites': 'The satellite falls toward Earth while moving sideways fast enough to keep missing the planet.',
-  'keplers-laws': 'Equal areas in equal times — the planet moves faster when closer to the Sun.',
-}
-const cap = computed(() => props.caption ?? CAPTIONS[props.type] ?? '')
-const isOpen     = ref(props.open ?? true)
-const tab        = ref<'svg'|'wasm'|'three'|'feel'>('svg')
+const cap = computed(() => props.caption ?? (CAPTIONS as Record<string, string>)[props.type] ?? '')
+const isOpen       = ref(props.open ?? true)
+const tab          = ref<'svg'|'wasm'|'three'|'feel'>('svg')
 const isFullscreen = ref(false)
 
-// Only show the Explore tab for types that have a WASM module built
-const WASM_TYPES = new Set(['si-units', 'projectile-motion'])
-const FEEL_TYPES = new Set(['si-units', 'significant-figures', 'dimensions', 'dimensional-analysis'])
+const WASM_TYPES = new Set(conceptConfig.wasmTypes)
+const FEEL_TYPES = new Set(conceptConfig.feelTypes)
 const hasWasm = computed(() => WASM_TYPES.has(props.type))
 const has3D   = computed(() => props.type === 'projectile-motion')
+const hasFeel = computed(() => FEEL_TYPES.has(props.type))
 
 function onKey(e: KeyboardEvent) {
   if (e.key === 'Escape' && isFullscreen.value) isFullscreen.value = false
@@ -76,12 +36,10 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
         <button class="ch-fullscreen-btn"
                 :aria-label="isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'"
                 @click="isFullscreen = !isFullscreen">
-          <!-- expand icon -->
           <svg v-if="!isFullscreen" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
             <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
           </svg>
-          <!-- compress icon -->
           <svg v-else viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/>
             <line x1="10" y1="14" x2="3" y2="21"/><line x1="21" y1="3" x2="14" y2="10"/>
@@ -134,7 +92,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
           <marker id="ahG" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#1f9d6b"/></marker>
         </defs>
 
-        <!-- Ch1 -->
+
         <g v-if="type === 'si-units'">
           <text x="180" y="34" class="lblS" text-anchor="middle">7 SI base units</text>
           <g class="u1"><rect x="22" y="48" width="92" height="58" rx="8" fill="#8aa0bf" stroke="#4b5a6b" stroke-width="1.5"/><text x="68" y="82" class="lblBig" text-anchor="middle">m</text><text x="68" y="98" class="lblS" text-anchor="middle">length</text></g>
@@ -177,7 +135,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
           <text x="180" y="146" class="lblS" text-anchor="middle">both sides match: equation can be valid</text>
         </g>
 
-        <!-- Ch2 -->
+
         <g v-else-if="type === 'displacement'">
           <line x1="30" y1="80" x2="330" y2="80" stroke="var(--vp-c-divider)" stroke-width="2"/>
           <line x1="30" y1="74" x2="30" y2="86" stroke="var(--vp-c-text-3)" stroke-width="1.5"/>
@@ -262,7 +220,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
           <text x="180" y="46" class="lblS" text-anchor="middle">(B seen from A: slowly pulling ahead)</text>
         </g>
 
-        <!-- Ch3 -->
+
         <g v-else-if="type === 'scalars-and-vectors'">
           <rect x="20" y="30" width="140" height="90" rx="8" fill="var(--vp-c-bg-soft)" stroke="var(--vp-c-divider)" stroke-width="1.5"/>
           <text x="90" y="50" class="lblS" text-anchor="middle">SCALAR</text>
@@ -357,7 +315,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
           <text x="180" y="10" class="lblS" text-anchor="middle">|v| constant, direction changes</text>
         </g>
 
-        <!-- Ch4 -->
+
         <g v-else-if="type === 'inertia-first-law'">
           <line x1="15" y1="120" x2="345" y2="120" stroke="var(--vp-c-divider)" stroke-width="2"/>
           <text x="180" y="30" class="lblS" text-anchor="middle">No net force → constant velocity</text>
@@ -453,7 +411,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
           <text x="100" y="142" class="lbl" fill="#e2483d">centripetal force</text>
         </g>
 
-        <!-- Ch5 -->
+
         <g v-else-if="type === 'work'">
           <line x1="20" y1="120" x2="340" y2="120" stroke="var(--vp-c-divider)" stroke-width="2"/>
           <g class="workBox">
@@ -558,7 +516,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
           <text x="180" y="140" class="lblS" text-anchor="middle">elastic: KE also conserved</text>
         </g>
 
-        <!-- Ch6 -->
+
         <g v-else-if="type === 'centre-of-mass'">
           <line x1="30" y1="90" x2="330" y2="90" stroke="var(--vp-c-divider)" stroke-width="2"/>
           <circle cx="80" cy="90" r="22" fill="#4b5a6b" stroke="#2a3442" stroke-width="1.5"/>
@@ -631,7 +589,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
           <text x="180" y="148" class="lblS" text-anchor="middle">bottom: v=0, top: 2v, v=Rw</text>
         </g>
 
-        <!-- Ch7 -->
+
         <g v-else-if="type === 'universal-law'">
           <g class="gravM1">
             <circle cx="95" cy="75" r="26" fill="#4b5a6b" stroke="#2a3442" stroke-width="1.5"/>
@@ -709,7 +667,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
         </g>
 
 
-        <!-- Ch8 -->
+
         <g v-else-if="type === 'stress-and-strain'">
           <rect x="100" y="60" width="160" height="60" rx="4" fill="#8aa0bf" stroke="#4b5a6b" stroke-width="1.5"/>
           <g class="ssStretch">
@@ -776,7 +734,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
           <text x="180" y="144" class="lblS" text-anchor="middle">deeper beam → 8× less sag</text>
         </g>
 
-        <!-- Ch9 -->
+
         <g v-else-if="type === 'pressure'">
           <rect x="120" y="30" width="120" height="110" rx="4" fill="none" stroke="#4b5a6b" stroke-width="2"/>
           <rect x="120" y="30" width="120" height="110" rx="4" fill="#3a7bd5" fill-opacity="0.18"/>
@@ -839,7 +797,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
           <text x="180" y="148" class="lblS" text-anchor="middle">p + ½ρv² + ρgh = const</text>
         </g>
 
-        <!-- Ch10 -->
+
         <g v-else-if="type === 'temperature-and-heat'">
           <rect x="40" y="40" width="120" height="80" rx="6" fill="#3a7bd5" fill-opacity="0.3" stroke="#2f6fd0" stroke-width="1.5"/>
           <text x="100" y="85" class="lblM" text-anchor="middle" fill="#2f6fd0">HOT</text>
@@ -908,7 +866,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
           <text x="180" y="148" class="lblS" text-anchor="middle">rate of cooling ∝ (T − T₀)</text>
         </g>
 
-        <!-- Ch11 -->
+
         <g v-else-if="type === 'first-law'">
           <circle cx="180" cy="80" r="48" fill="var(--vp-c-bg-soft)" stroke="#4b5a6b" stroke-width="2"/>
           <text x="180" y="84" class="lblM" text-anchor="middle">System</text>
@@ -977,7 +935,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
           <text x="180" y="148" class="lblS" text-anchor="middle">Carnot cycle: 2 isothermals + 2 adiabatics</text>
         </g>
 
-        <!-- Ch12 -->
+
         <g v-else-if="type === 'kinetic-theory'">
           <rect x="40" y="30" width="280" height="110" rx="8" fill="none" stroke="#4b5a6b" stroke-width="2"/>
           <g class="ktMolecules">
@@ -1036,7 +994,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
           <text x="180" y="148" class="lblS" text-anchor="middle">λ ∝ T/p  |  ~70 nm at 1 atm</text>
         </g>
 
-        <!-- Ch13 -->
+
         <g v-else-if="type === 'shm'">
           <line x1="30" y1="90" x2="330" y2="90" stroke="var(--vp-c-divider)" stroke-width="1.5"/>
           <path d="M30,90 Q95,30 160,90 Q225,150 290,90" fill="none" stroke="#2f6fd0" stroke-width="2.5"/>
@@ -1093,7 +1051,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
           <text x="260" y="65" class="lblS" fill="#1f9d6b">(high Q)</text>
         </g>
 
-        <!-- Ch14 -->
+
         <g v-else-if="type === 'wave-motion'">
           <line x1="30" y1="90" x2="330" y2="90" stroke="var(--vp-c-divider)" stroke-width="1"/>
           <path class="waveMove" d="M30,90 Q67,40 104,90 Q141,140 178,90 Q215,40 252,90 Q289,140 326,90" fill="none" stroke="#2f6fd0" stroke-width="2.5"/>
@@ -1166,7 +1124,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
 </template>
 
 <style scoped>
-/* ── layout ── */
+
 figure.concept-hero { margin: 1.2rem 0; }
 .ch-card {
   border: 1px solid var(--vp-c-divider);
@@ -1209,82 +1167,57 @@ figcaption {
   font-style: italic;
 }
 
-/* ── shared text classes ── */
 .lbl  { font: 500 11px/1 system-ui, sans-serif; }
 .lblM { font: 600 13px/1 system-ui, sans-serif; }
 .lblS { font: 400 10px/1 system-ui, sans-serif; }
 
-/* ════════════════════════════════════
-   Ch1
-════════════════════════════════════ */
-/* si-units: boxes pulse in sequence */
 @keyframes siPulse { 0%,100%{opacity:.4} 50%{opacity:1} }
 .u1 { animation: siPulse 2.4s ease-in-out infinite 0s; }
 .u2 { animation: siPulse 2.4s ease-in-out infinite .8s; }
 .u3 { animation: siPulse 2.4s ease-in-out infinite 1.6s; }
 
-/* significant-figures: significant digit bar blinks */
 @keyframes sfBlink { 0%,100%{opacity:1} 50%{opacity:.2} }
 .sfBar { animation: sfBlink 1.4s ease-in-out infinite; }
 
-/* dimensions: each dimension label bounces in sequence */
 @keyframes dimBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
 .dimM  { animation: dimBounce 1.6s ease-in-out infinite 0s; }
 .dimL  { animation: dimBounce 1.6s ease-in-out infinite .4s; }
 .dimT  { animation: dimBounce 1.6s ease-in-out infinite .8s; }
 .dimEq { animation: dimBounce 1.6s ease-in-out infinite 1.2s; }
 
-/* dimensional-analysis: balance beam rocks (already uses .balBeam → eqRock) */
-
-/* ════════════════════════════════════
-   Ch2
-════════════════════════════════════ */
-/* displacement: object moves right */
 @keyframes dispMove { 0%,15%{transform:translateX(0)} 85%,100%{transform:translateX(110px)} }
 .dispObj { animation: dispMove 2.8s ease-in-out infinite; }
 
-/* velocity-speed: two cars move at different speeds */
 @keyframes carFast { 0%,100%{transform:translateX(0)} 50%{transform:translateX(90px)} }
 @keyframes carSlow { 0%,100%{transform:translateX(0)} 50%{transform:translateX(40px)} }
 .carA { animation: carFast 2s ease-in-out infinite; }
 .carB { animation: carSlow 3s ease-in-out infinite; }
 
-/* acceleration: ball speeds up along v-t slope */
 @keyframes accObj { 0%{transform:translateX(0)} 100%{transform:translateX(120px)} }
 .accObj { animation: accObj 2s cubic-bezier(.2,0,.6,1) infinite; }
 
-/* equations-of-motion: ball falls with increasing speed */
 @keyframes eomFall { 0%{transform:translateY(0)} 80%{transform:translateY(66px)} 100%{transform:translateY(66px)} }
 
-/* relative-velocity: trains at different speeds */
 @keyframes trainFast { 0%,100%{transform:translateX(0)} 50%{transform:translateX(80px)} }
 @keyframes trainSlow { 0%,100%{transform:translateX(0)} 50%{transform:translateX(30px)} }
 .trainA { animation: trainFast 2.4s ease-in-out infinite; }
 .trainB { animation: trainSlow 2.4s ease-in-out infinite; }
 
-/* ════════════════════════════════════
-   Ch3
-════════════════════════════════════ */
-/* scalars-and-vectors: arrow rotate */
 @keyframes svRotate { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(15deg)} }
 .svArrow { transform-origin: 60px 90px; animation: svRotate 2s ease-in-out infinite; }
 
-/* vector-addition: A and B pulse; resultant brightens */
 @keyframes vaResult { 0%,100%{opacity:.5} 50%{opacity:1} }
 .vecA { animation: vaResult 1.8s ease-in-out infinite 0s; }
 .vecB { animation: vaResult 1.8s ease-in-out infinite .6s; }
 
-/* vector-components: x/y components reveal */
 @keyframes vcReveal { 0%,30%{opacity:0} 60%,100%{opacity:1} }
 .vecComp { animation: vcReveal 2s ease-in-out infinite; }
 
-/* relative-velocity-2d: objects drift in 2D */
 @keyframes rv2dA { 0%,100%{transform:translate(0,0)} 50%{transform:translate(24px,-10px)} }
 @keyframes rv2dB { 0%,100%{transform:translate(0,0)} 50%{transform:translate(14px,4px)} }
 .rv2dA { animation: rv2dA 2.4s ease-in-out infinite; }
 .rv2dB { animation: rv2dB 2.4s ease-in-out infinite .6s; }
 
-/* projectile-motion: ball follow arc */
 @keyframes projBall {
   0%  { transform:translate(0,0); }
   25% { transform:translate(55px,-32px); }
@@ -1294,82 +1227,63 @@ figcaption {
 }
 .projBall { animation: projBall 3s ease-in-out infinite; }
 
-/* uniform-circular-motion: ball + arrows orbit */
 @keyframes ucmOrbit { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
 .ucmBall  { transform-origin: 180px 73px; animation: ucmOrbit 2.4s linear infinite; }
 .ucmDot   { transform-origin: 180px 73px; animation: ucmOrbit 2.4s linear infinite; }
 .ucmArrow { transform-origin: 180px 73px; animation: ucmOrbit 2.4s linear infinite; }
 
-/* ════════════════════════════════════
-   Ch4
-════════════════════════════════════ */
-/* inertia-first-law: ball glides at constant velocity (no net force) */
 @keyframes il1Glide { 0%{transform:translateX(0)} 80%{transform:translateX(230px)} 81%{transform:translateX(-90px);opacity:0} 82%{opacity:0} 100%{transform:translateX(0);opacity:1} }
 .il1Ball { animation: il1Glide 3.5s linear infinite; }
 
-/* momentum-second-law: force → acceleration */
 @keyframes ms2Push { 0%,100%{transform:translateX(0)} 50%{transform:translateX(18px)} }
 .ms2Box { animation: ms2Push 2s ease-in-out infinite; }
 
-/* impulse: bat-ball collision */
 @keyframes impBat { 0%,100%{transform:translateX(0)} 40%,60%{transform:translateX(16px)} }
 @keyframes impBall { 0%,50%{transform:translateX(0)} 100%{transform:translateX(80px)} }
 .impBat  { animation: impBat  1.8s ease-in-out infinite; }
 .impBall { animation: impBall 1.8s ease-in-out infinite; }
 
-/* third-law: boxes push apart (equal & opposite) */
 @keyframes boxAPush { 0%,100%{transform:translateX(0)} 50%{transform:translateX(-10px)} }
 @keyframes boxBPush { 0%,100%{transform:translateX(0)} 50%{transform:translateX(10px)} }
 .boxA { animation: boxAPush 2s ease-in-out infinite; }
 .boxB { animation: boxBPush 2s ease-in-out infinite; }
 
-/* conservation-of-momentum: explosion — heavy drifts left, light shoots right */
 @keyframes cmHeavy { 0%,15%{transform:translateX(0)} 85%,100%{transform:translateX(-28px)} }
 @keyframes cmLight { 0%,15%{transform:translateX(0)} 85%,100%{transform:translateX(75px)} }
 .heavy { animation: cmHeavy 2.4s ease-out infinite; }
 .light { animation: cmLight 2.4s ease-out infinite; }
-/* (legacy billiard keyframes kept for potential future use) */
+
 @keyframes cmBall1 { 0%,10%{transform:translateX(0)} 50%,100%{transform:translateX(60px)} }
 @keyframes cmBall2 { 0%,50%{transform:translateX(0)} 90%,100%{transform:translateX(60px)} }
 
-/* equilibrium: hanging mass sways; balance beam tilts */
 @keyframes eqRock  { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(2deg)} }
 @keyframes swingPend { 0%,100%{transform:rotate(0deg)} 25%{transform:rotate(-3deg)} 75%{transform:rotate(3deg)} }
 .eqBeam { transform-origin: 180px 95px; animation: eqRock 2.4s ease-in-out infinite; }
 .swing  { transform-origin: 180px 22px; animation: swingPend 2.8s ease-in-out infinite; }
-/* dimensional-analysis balance beam */
+
 .balBeam { transform-origin: 180px 50px; animation: eqRock 2.4s ease-in-out infinite; }
 
-/* friction: block slides; force arrows pulse */
 @keyframes frSlide    { 0%,100%{transform:translateX(0)} 50%{transform:translateX(28px)} }
 @keyframes forceArrow { 0%,100%{opacity:0.55} 50%{opacity:1} }
 .frBlock  { animation: frSlide    2.4s ease-in-out infinite; }
 .applied  { animation: forceArrow 1.4s ease-in-out infinite; }
 .fric     { animation: forceArrow 1.4s ease-in-out infinite 0.7s; }
 
-/* circular-motion: ball orbits centre */
 .orbit { transform-origin: 180px 75px; animation: ucmOrbit 3s linear infinite; }
 
-/* ════════════════════════════════════
-   Ch5
-════════════════════════════════════ */
-/* work: box slides */
 @keyframes workBox { 0%,100%{transform:translateX(0)} 50%{transform:translateX(80px)} }
 @keyframes workForce { 0%,100%{transform:translateX(0)} 50%{transform:translateX(80px)} }
 .workBox   { animation: workBox   2.4s ease-in-out infinite; }
 .workForce { animation: workForce 2.4s ease-in-out infinite; }
 
-/* kinetic-energy: slow/fast labels pulse alternately */
 @keyframes keSlow { 0%,45%,100%{opacity:1} 55%,90%{opacity:.3} }
 @keyframes keFast { 0%,10%,55%{opacity:.3} 45%,100%{opacity:1} }
 .keSlow { animation: keSlow 2.4s ease-in-out infinite; }
 .keFast { animation: keFast 2.4s ease-in-out infinite; }
 
-/* potential-energy: ball drop */
 @keyframes peBall { 0%,20%{transform:translateY(0)} 80%,100%{transform:translateY(60px)} }
 .peBall { animation: peBall 2s ease-in infinite; }
 
-/* conservation-of-energy: ball on slope */
 @keyframes ceBall {
   0%  { transform: translate(40px, 30px); }
   50% { transform: translate(140px, 128px); }
@@ -1377,13 +1291,11 @@ figcaption {
 }
 .ceBall { animation: ceBall 3s ease-in-out infinite; }
 
-/* power: fast object */
 @keyframes pwrFast { 0%,100%{transform:translateX(0)} 50%{transform:translateX(90px)} }
 @keyframes pwrSlow { 0%,100%{transform:translateX(0)} 50%{transform:translateX(40px)} }
 .pwrFast { animation: pwrFast 2s ease-in-out infinite; }
 .pwrSlow { animation: pwrSlow 2s ease-in-out infinite; }
 
-/* collisions: balls approach then separate */
 @keyframes colB1 { 0%,40%{transform:translateX(0)} 60%,100%{transform:translateX(20px)} }
 @keyframes colB2 { 0%,40%{transform:translateX(0)} 60%,100%{transform:translateX(-20px)} }
 @keyframes colA1 { 0%,50%{opacity:0} 60%,100%{opacity:1;transform:translateX(-10px)} }
@@ -1393,52 +1305,36 @@ figcaption {
 .colA1 { opacity:0; animation: colA1 2.4s ease-in-out infinite; }
 .colA2 { opacity:0; animation: colA2 2.4s ease-in-out infinite; }
 
-/* ════════════════════════════════════
-   Ch6
-════════════════════════════════════ */
-/* centre-of-mass: marker bob */
 @keyframes cmMark { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
 .cmMarker { animation: cmMark 2s ease-in-out infinite; }
 
-/* torque: force arrow pulse */
 @keyframes tqArrow { 0%,100%{transform:translateY(0);opacity:.7} 50%{transform:translateY(-10px);opacity:1} }
 .torqueArrow { animation: tqArrow 1.8s ease-in-out infinite; }
 
-/* angular-momentum: arrow bob */
 @keyframes amArrow { 0%,100%{transform:scaleY(1)} 50%{transform:scaleY(1.15)} }
 .amArrow { transform-origin: 180px 55px; animation: amArrow 1.6s ease-in-out infinite; }
 
-/* rolling-motion: wheel rolls */
 @keyframes rollWheel { 0%{transform:translate(110px,92px) rotate(0deg)} 100%{transform:translate(230px,92px) rotate(360deg)} }
 .rollingWheel { animation: rollWheel 3s linear infinite; }
 
-/* ════════════════════════════════════
-   Ch7
-════════════════════════════════════ */
-/* universal-law: masses pulse */
 @keyframes gravPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
 .gravM1 { transform-origin: 95px 75px; animation: gravPulse 2s ease-in-out infinite; }
 .gravM2 { transform-origin: 265px 75px; animation: gravPulse 2s ease-in-out .4s infinite; }
 
-/* gravitational-field: lines ripple outward */
 @keyframes gField { 0%,100%{opacity:.5;stroke-width:1.5} 50%{opacity:1;stroke-width:2.5} }
 .gField { animation: gField 2s ease-in-out infinite; }
 
-/* escape-velocity: rocket rise */
 @keyframes escRocket { 0%{transform:translateY(0)} 80%{transform:translateY(-62px);opacity:1} 100%{transform:translateY(-62px);opacity:0} }
 .escRocket { animation: escRocket 2.4s ease-in infinite; }
 
-/* satellites: orbit */
 @keyframes satOrbit { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
 .satOrbit { transform-origin: 180px 75px; animation: satOrbit 4s linear infinite; }
 
-/* keplers-laws: close/far planet rock */
 @keyframes kepClose { 0%,100%{transform:translate(0,0)} 50%{transform:translate(6px,3px)} }
 @keyframes kepFar   { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-3px,0)} }
 .kepClose { animation: kepClose 2s ease-in-out infinite; }
 .kepFar   { animation: kepFar   2s ease-in-out .5s infinite; }
 
-/* Ch8 animations */
 .ssStretch { animation: ssStretchKf 2s ease-in-out infinite alternate; transform-origin: center; }
 @keyframes ssStretchKf { from { transform: scaleX(1); } to { transform: scaleX(1.12); } }
 .hookSpring { animation: hookKf 1.8s ease-in-out infinite alternate; transform-origin: 80px 80px; }
@@ -1450,7 +1346,6 @@ figcaption {
 .beamLoad { animation: beamKf 2s ease-in-out infinite alternate; transform-origin: 180px 50px; }
 @keyframes beamKf { from { transform: translateY(0); } to { transform: translateY(6px); } }
 
-/* Ch9 animations */
 .archBlock { animation: archKf 2.4s ease-in-out infinite alternate; transform-origin: 180px 95px; }
 @keyframes archKf { from { transform: translateY(0); } to { transform: translateY(-18px); } }
 .viscSphere { animation: viscKf 2.8s ease-in infinite; transform-origin: 80px 60px; }
@@ -1460,7 +1355,6 @@ figcaption {
 .bernFlow { animation: bernKf 1.6s ease-in-out infinite; }
 @keyframes bernKf { 0% { opacity: 1; transform: translateX(0); } 100% { opacity: 0.3; transform: translateX(30px); } }
 
-/* Ch10 animations */
 .heatFlow { animation: heatKf 1.4s ease-in-out infinite; }
 @keyframes heatKf { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 .thermalExpand { animation: thermKf 2s ease-in-out infinite alternate; transform-origin: 40px 130px; }
@@ -1472,7 +1366,6 @@ figcaption {
 .nclCurve { animation: nclKf 3s ease-out infinite; stroke-dasharray: 400; stroke-dashoffset: 400; }
 @keyframes nclKf { 0% { stroke-dashoffset: 400; } 70%,100% { stroke-dashoffset: 0; } }
 
-/* Ch11 animations */
 .flQArrow { animation: flQKf 2s ease-in-out infinite; }
 .flQArrow { animation: flQKf 2s ease-in-out infinite; }
 @keyframes flQKf { 0%,100% { opacity: 1; transform: translateX(0); } 50% { opacity: 0.4; transform: translateX(8px); } }
@@ -1483,7 +1376,6 @@ figcaption {
 .stTension { animation: stKf 2s ease-in-out infinite; }
 @keyframes stKf { 0%,100% { r: 3; } 50% { r: 5; } }
 
-/* ── collapse toggle ── */
 .ch-toggle {
   display: flex;
   align-items: center;
@@ -1501,7 +1393,6 @@ figcaption {
 .ch-arrow { transition: transform 0.22s ease; }
 .ch-arrow.open { transform: rotate(90deg); }
 
-/* Tab switcher */
 .ch-tabs {
   display: flex;
   gap: 4px;
@@ -1530,7 +1421,6 @@ figcaption {
   color: var(--vp-c-text-1);
 }
 
-/* Fullscreen button */
 .ch-fullscreen-btn {
   display: inline-flex;
   align-items: center;
@@ -1551,7 +1441,6 @@ figcaption {
   border-color: var(--pc-visual);
 }
 
-/* Fullscreen overlay */
 .ch-card--full {
   position: fixed !important;
   inset: 0 !important;
@@ -1579,3 +1468,4 @@ figcaption {
   font-size: 0.85rem;
 }
 </style>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   

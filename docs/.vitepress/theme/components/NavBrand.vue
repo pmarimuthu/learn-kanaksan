@@ -1,5 +1,4 @@
-<!-- Injected into VitePress nav-bar-title-before slot.
-     Replaces the static favicon.svg with the correct animated subject icon. -->
+
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute } from 'vitepress'
@@ -11,5 +10,5 @@ const subject = computed(() => subjectFromPath(route.path))
 </script>
 
 <template>
-  <SubjectIcon :subjectId="subject.id" :size="22" style="margin-right: 4px; flex-shrink: 0;" />
+  <SubjectIcon :subjectId="subject.id" :size="22" style="flex-shrink: 0;" />
 </template>

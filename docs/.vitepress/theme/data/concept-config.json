@@ -1,0 +1,4 @@
+{
+  "wasmTypes": ["si-units", "projectile-motion"],
+  "feelTypes": ["si-units", "significant-figures", "dimensions", "dimensional-analysis"]
+}

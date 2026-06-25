@@ -1,4 +1,4 @@
-<!-- DNA Double Helix — Static DNA with Scanning Beam -->
+
 <script setup lang="ts">
 defineProps<{ size?: number }>()
 </script>
@@ -12,7 +12,7 @@ defineProps<{ size?: number }>()
     xmlns="http://www.w3.org/2000/svg"
   >
     <defs>
-      <!-- Strand Gradients -->
+      
       <linearGradient
         id="bio-s1"
         x1="10"
@@ -39,7 +39,7 @@ defineProps<{ size?: number }>()
         <stop offset="100%" stop-color="#e11d48" />
       </linearGradient>
 
-      <!-- Beam Gradient -->
+      
       <linearGradient
         id="scan-beam"
         x1="0"
@@ -52,15 +52,15 @@ defineProps<{ size?: number }>()
         <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
       </linearGradient>
 
-      <!-- Glow -->
+      
       <filter id="beam-glow">
         <feGaussianBlur stdDeviation="1.2" />
       </filter>
     </defs>
 
-    <!-- ===================================================== -->
-    <!-- DNA STRAND 1 -->
-    <!-- ===================================================== -->
+    
+    
+    
 
     <path
       d="M10 2 C20 8,28 12,20 20 C12 28,20 32,10 38"
@@ -70,9 +70,9 @@ defineProps<{ size?: number }>()
       fill="none"
     />
 
-    <!-- ===================================================== -->
-    <!-- DNA STRAND 2 -->
-    <!-- ===================================================== -->
+    
+    
+    
 
     <path
       d="M30 2 C20 8,12 12,20 20 C28 28,20 32,30 38"
@@ -82,9 +82,9 @@ defineProps<{ size?: number }>()
       fill="none"
     />
 
-    <!-- ===================================================== -->
-    <!-- BASE PAIRS -->
-    <!-- ===================================================== -->
+    
+    
+    
 
     <line
       x1="10"
@@ -152,9 +152,9 @@ defineProps<{ size?: number }>()
       opacity="0.9"
     />
 
-    <!-- ===================================================== -->
-    <!-- END NODES -->
-    <!-- ===================================================== -->
+    
+    
+    
 
     <circle
       cx="10"
@@ -184,9 +184,9 @@ defineProps<{ size?: number }>()
       fill="#e11d48"
     />
 
-    <!-- ===================================================== -->
-    <!-- SCANNING BEAM -->
-    <!-- ===================================================== -->
+    
+    
+    
 
     <g>
       <rect

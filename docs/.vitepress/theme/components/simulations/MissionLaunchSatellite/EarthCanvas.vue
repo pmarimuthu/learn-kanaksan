@@ -1,18 +1,5 @@
 <script setup lang="ts">
-/**
- * EarthCanvas.vue
- * ------------------------------------------------------------------------
- * A "dumb" canvas renderer: it owns no physics and no animation loop.
- * The parent (MissionLaunchSatellite.vue) drives one shared
- * requestAnimationFrame loop and calls `draw(frame)` on this component
- * every tick. Keeping the render loop in exactly one place avoids the
- * classic "two rAF loops fighting each other" bug and makes it trivial
- * to pause/resume from outside.
- *
- * All canvas/DOM access happens inside onMounted/onUnmounted so this
- * component is safe under VitePress's SSR build pass (the component is
- * rendered once in Node with no `window`/`document` available).
- */
+
 import { onMounted, onUnmounted, ref } from 'vue'
 import type { RenderFrame } from './types'
 import { EARTH_RADIUS_M, geostationaryRadius } from './PhysicsEngine'
@@ -65,7 +52,6 @@ onUnmounted(() => {
   resizeObserver?.disconnect()
 })
 
-/** Render one frame. Called by the parent's rAF loop. */
 function draw(frame: RenderFrame) {
   if (!ctx || cssW === 0 || cssH === 0) return
 

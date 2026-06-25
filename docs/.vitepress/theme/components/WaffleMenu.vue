@@ -1,7 +1,4 @@
-<!--
-  WaffleMenu — 9-dot grid button that opens a menu panel.
-  Used on subject pages (HomeLanding) and chapter/lesson pages (Layout navbar).
--->
+
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { SUBJECTS_LIST, SITE } from '../subjects'
@@ -65,7 +62,7 @@ function goToSubject(path: string | undefined, status: string) {
     </button>
 
     <div v-if="menuOpen" class="wm-panel">
-      <!-- Subjects -->
+      
       <p class="wm-section">Subjects</p>
       <button
         v-for="s in SUBJECTS_LIST"
@@ -82,13 +79,13 @@ function goToSubject(path: string | undefined, status: string) {
 
       <div class="wm-divider" />
 
-      <!-- Home -->
+      
       <a href="/" class="wm-item" @click="menuOpen = false">
         <span class="wm-emoji">📚</span>
         <span>{{ SITE.name }}</span>
       </a>
 
-      <!-- Dark mode -->
+      
       <button class="wm-item" @click="toggleDark">
         <span class="wm-emoji">{{ isDark ? '☀️' : '🌙' }}</span>
         <span>{{ isDark ? 'Light mode' : 'Dark mode' }}</span>

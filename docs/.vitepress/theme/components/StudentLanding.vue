@@ -16,7 +16,6 @@ const subjectsByClass: Record<string, typeof SUBJECTS_LIST> = {
   c12: [],
 }
 
-// Restore last selection, fall back to Class 11 + Physics
 const savedClass   = typeof localStorage !== 'undefined' ? localStorage.getItem(LS_CLASS)   : null
 const savedSubject = typeof localStorage !== 'undefined' ? localStorage.getItem(LS_SUBJECT) : null
 
@@ -59,18 +58,14 @@ function toggleDark() {
   document.documentElement.classList.toggle('dark', isDark.value)
   localStorage.setItem('vitepress-theme-appearance', isDark.value ? 'dark' : 'light')
 }
-
 </script>
 
 <template>
   <div class="sl-root">
-    <!-- Background orbs -->
     <div class="sl-orb sl-orb1" aria-hidden="true"></div>
     <div class="sl-orb sl-orb2" aria-hidden="true"></div>
 
     <main class="sl-main">
-
-      <!-- ── LOGO ── -->
       <div class="sl-logo-wrap">
         <div class="sl-logo-mark">
           <span class="sl-logo-emoji">📚</span>
@@ -81,7 +76,6 @@ function toggleDark() {
         </div>
       </div>
 
-      <!-- ── CARD ── -->
       <div class="sl-card">
         <div class="sl-row-header">
           <p class="sl-card-label">Select your class</p>
@@ -129,7 +123,6 @@ function toggleDark() {
 
         <p class="sl-board-note">NCERT · CBSE · Karnataka PU Board · JEE · KCET</p>
       </div>
-
     </main>
 
     <footer class="sl-footer">© {{ SITE.copyrightYear }} {{ SITE.name }} · {{ SITE.copyrightSuffix }}</footer>
@@ -137,7 +130,6 @@ function toggleDark() {
 </template>
 
 <style scoped>
-/* ── ROOT ── */
 .sl-root {
   min-height: 100vh;
   display: flex;
@@ -151,7 +143,6 @@ function toggleDark() {
   font-family: system-ui, -apple-system, sans-serif;
 }
 
-/* ── BACKGROUND ORBS ── */
 .sl-orb {
   position: absolute;
   border-radius: 50%;
@@ -170,7 +161,6 @@ function toggleDark() {
   bottom: -80px; right: -80px;
 }
 
-/* ── MAIN ── */
 .sl-main {
   display: flex;
   flex-direction: column;
@@ -182,7 +172,6 @@ function toggleDark() {
   z-index: 1;
 }
 
-/* ── LOGO ── */
 .sl-logo-wrap {
   display: flex;
   flex-direction: column;
@@ -222,7 +211,6 @@ function toggleDark() {
   font-weight: 500;
 }
 
-/* ── CARD ── */
 .sl-card {
   width: 100%;
   background: var(--vp-c-bg-soft);
@@ -243,7 +231,6 @@ function toggleDark() {
   margin: 4px 0 0;
 }
 
-/* ── CLASS ROW HEADER ── */
 .sl-row-header {
   display: flex;
   align-items: center;
@@ -268,7 +255,6 @@ function toggleDark() {
 .sl-dark-toggle:hover { color: var(--vp-c-text-1); background: var(--vp-c-bg-alt); }
 .sl-dark-toggle svg { width: 14px; height: 14px; }
 
-/* ── CLASS PILLS ── */
 .sl-pill-group {
   display: flex;
   gap: 8px;
@@ -295,7 +281,6 @@ function toggleDark() {
 }
 .sl-pill.soon { opacity: 0.45; cursor: not-allowed; }
 
-/* ── SUBJECT GRID ── */
 .sl-subject-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -318,7 +303,7 @@ function toggleDark() {
   border-color: var(--vp-c-brand-1);
   background: color-mix(in srgb, var(--vp-c-brand-1) 8%, var(--vp-c-bg));
 }
-.sl-subj-btn.soon { opacity: 0.75; }   /* selectable — badge conveys "coming soon" */
+.sl-subj-btn.soon { opacity: 0.75; }
 .sl-subj-icon { font-size: 1.3rem; line-height: 1; }
 .sl-subj-label {
   font-size: 0.85rem;
@@ -326,7 +311,6 @@ function toggleDark() {
   color: var(--vp-c-text-1);
 }
 
-/* ── SOON BADGE ── */
 .sl-soon {
   font-size: 0.6rem;
   font-weight: 700;
@@ -339,7 +323,6 @@ function toggleDark() {
   margin-left: auto;
 }
 
-/* ── START BUTTON ── */
 .sl-start-btn {
   width: 100%;
   padding: 14px;
@@ -357,7 +340,6 @@ function toggleDark() {
 .sl-start-btn:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
 .sl-start-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-/* ── BOARD NOTE ── */
 .sl-board-note {
   font-size: 0.68rem;
   color: var(--vp-c-text-3);
@@ -365,7 +347,6 @@ function toggleDark() {
   margin: 0;
 }
 
-/* ── FOOTER ── */
 .sl-footer {
   position: absolute;
   bottom: 20px;
@@ -373,6 +354,5 @@ function toggleDark() {
   color: var(--vp-c-text-3);
 }
 
-/* ── DARK MODE orb tweak ── */
 :root.dark .sl-orb { opacity: 0.12; }
 </style>

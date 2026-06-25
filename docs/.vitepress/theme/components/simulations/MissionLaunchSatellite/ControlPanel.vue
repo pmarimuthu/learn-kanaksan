@@ -1,12 +1,5 @@
 <script setup lang="ts">
-/**
- * ControlPanel.vue
- * ------------------------------------------------------------------------
- * All student-facing inputs: the three launch sliders, the simulation
- * speed selector, and the Launch/Pause/Resume/Reset transport buttons.
- * No physics knowledge here — it just reports parameter changes and
- * button presses upward.
- */
+
 import { computed, watch } from 'vue'
 import type { RunPhase, SimSpeed } from './types'
 

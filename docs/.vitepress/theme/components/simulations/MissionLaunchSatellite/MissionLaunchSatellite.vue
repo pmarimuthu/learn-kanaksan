@@ -1,18 +1,5 @@
 <script setup lang="ts">
-/**
- * MissionLaunchSatellite.vue
- * ------------------------------------------------------------------------
- * Top-level orchestrator for "Mission: Launch a Satellite". Owns the one
- * requestAnimationFrame loop, the physics state, mission tracking and
- * the contextual "learning moment" popups. EarthCanvas stays a dumb
- * renderer; ControlPanel stays a dumb input panel; this component is
- * where they meet.
- *
- * SSR note: VitePress pre-renders this component once in Node during
- * `vitepress build`. Every browser-only API (rAF, canvas, performance)
- * is therefore called only from inside onMounted/onUnmounted, never at
- * module or setup top level.
- */
+
 import { computed, onMounted, onUnmounted, reactive, ref, shallowRef, watch } from 'vue'
 import EarthCanvas from './EarthCanvas.vue'
 import ControlPanel from './ControlPanel.vue'

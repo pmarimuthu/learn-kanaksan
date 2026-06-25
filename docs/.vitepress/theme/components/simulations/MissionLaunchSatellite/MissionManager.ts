@@ -1,10 +1,4 @@
-/**
- * MissionManager.ts
- * ------------------------------------------------------------------------
- * Defines the three guided challenges and the one-off "learning moment"
- * explanations that appear when a milestone is first reached. Kept free
- * of Vue so it can be reasoned about (and unit tested) in isolation.
- */
+
 
 import { EARTH_RADIUS_M, geostationaryRadius } from './PhysicsEngine'
 import type { FlightStatus, LearningMoment, MissionDef, MissionId, MissionProgress, Telemetry } from './types'
@@ -55,12 +49,6 @@ export function createMissionProgress(id: MissionId): MissionProgress {
   }
 }
 
-/**
- * Step a mission's progress forward by dtSeconds of *simulated* time,
- * given the latest telemetry and the orbit's apoapsis altitude (km,
- * Infinity for unbound). Resets the hold timer the instant the success
- * condition stops holding, so partial credit doesn't carry over.
- */
 export function updateMissionProgress(
   progress: MissionProgress,
   telemetry: Telemetry,
@@ -90,11 +78,6 @@ export function updateMissionProgress(
   return { ...progress, holdSeconds, completed }
 }
 
-/**
- * Contextual explanations shown the first time a milestone is reached.
- * Deliberately plain-language — formulas live on the rest of the chapter
- * pages, not here. The simulation's job is the "aha", not the algebra.
- */
 export const LEARNING_MOMENTS: Partial<Record<FlightStatus, LearningMoment>> = {
   orbit: {
     key: 'orbit',

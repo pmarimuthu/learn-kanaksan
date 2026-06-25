@@ -6,7 +6,7 @@ onMounted(() => { pick.value = Math.floor(Math.random() * 10) })
 </script>
 
 <template>
-  <!-- 0: Projectile Motion -->
+  
   <svg v-if="pick===0" viewBox="0 0 320 160" class="pa-svg" aria-label="Projectile motion">
     <defs>
       <path id="para" d="M20,140 Q160,10 300,140" fill="none"/>
@@ -24,7 +24,7 @@ onMounted(() => { pick.value = Math.floor(Math.random() * 10) })
     <text x="125" y="14" font-size="10" fill="#06b6d4" font-family="system-ui" font-weight="600" text-anchor="middle">Projectile Motion</text>
   </svg>
 
-  <!-- 1: Simple Pendulum -->
+  
   <svg v-else-if="pick===1" viewBox="0 0 200 200" class="pa-svg" aria-label="Simple pendulum">
     <line x1="100" y1="10" x2="100" y2="15" stroke="var(--vp-c-text-2)" stroke-width="2"/>
     <rect x="80" y="10" width="40" height="6" rx="2" fill="var(--vp-c-bg-soft)" stroke="var(--vp-c-text-3)" stroke-width="1"/>
@@ -36,24 +36,24 @@ onMounted(() => { pick.value = Math.floor(Math.random() * 10) })
     <text x="100" y="192" font-size="10" fill="#8b5cf6" font-family="system-ui" font-weight="600" text-anchor="middle">Simple Pendulum</text>
   </svg>
 
-  <!-- 2: Planetary Orbit -->
+  
   <svg v-else-if="pick===2" viewBox="0 0 220 200" class="pa-svg" aria-label="Planetary orbit">
     <ellipse cx="110" cy="100" rx="90" ry="55" fill="none" stroke="#06b6d4" stroke-width="1" stroke-dasharray="3 3" opacity="0.4"/>
-    <!-- Sun -->
+    
     <circle cx="72" cy="100" r="14" fill="#f59e0b">
       <animate attributeName="r" values="13;15;13" dur="3s" repeatCount="indefinite"/>
     </circle>
     <circle cx="72" cy="100" r="20" fill="#f59e0b" opacity="0.15">
       <animate attributeName="r" values="18;24;18" dur="3s" repeatCount="indefinite"/>
     </circle>
-    <!-- Planet -->
+    
     <circle r="8" fill="#06b6d4">
       <animateMotion dur="4s" repeatCount="indefinite">
         <mpath href="#orbit2"/>
       </animateMotion>
     </circle>
     <defs><path id="orbit2" d="M200,100 A90,55 0 1,1 199.9,100"/></defs>
-    <!-- Moon -->
+    
     <circle r="4" fill="#a3e635">
       <animateMotion dur="1.2s" repeatCount="indefinite">
         <mpath href="#orbit2m"/>
@@ -63,23 +63,23 @@ onMounted(() => { pick.value = Math.floor(Math.random() * 10) })
     <text x="110" y="188" font-size="10" fill="#f59e0b" font-family="system-ui" font-weight="600" text-anchor="middle">Planetary Motion</text>
   </svg>
 
-  <!-- 3: Newton's Cradle -->
+  
   <svg v-else-if="pick===3" viewBox="0 0 240 180" class="pa-svg" aria-label="Newton's cradle">
     <line x1="50" y1="20" x2="190" y2="20" stroke="var(--vp-c-text-2)" stroke-width="2"/>
-    <!-- Strings + balls static middle 3 -->
+    
     <line x1="100" y1="20" x2="100" y2="120" stroke="var(--vp-c-text-3)" stroke-width="1"/>
     <circle cx="100" cy="130" r="11" fill="var(--vp-c-text-2)" opacity="0.7"/>
     <line x1="120" y1="20" x2="120" y2="120" stroke="var(--vp-c-text-3)" stroke-width="1"/>
     <circle cx="120" cy="130" r="11" fill="var(--vp-c-text-2)" opacity="0.7"/>
     <line x1="140" y1="20" x2="140" y2="120" stroke="var(--vp-c-text-3)" stroke-width="1"/>
     <circle cx="140" cy="130" r="11" fill="var(--vp-c-text-2)" opacity="0.7"/>
-    <!-- Left swinger -->
+    
     <g style="transform-origin:80px 20px">
       <animateTransform attributeName="transform" type="rotate" values="-38;0;0;0;0;0;0" dur="1.5s" repeatCount="indefinite" keyTimes="0;0.25;0.5;0.55;0.6;0.8;1" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1"/>
       <line x1="80" y1="20" x2="80" y2="120" stroke="var(--vp-c-text-3)" stroke-width="1"/>
       <circle cx="80" cy="130" r="11" fill="#06b6d4"/>
     </g>
-    <!-- Right swinger -->
+    
     <g style="transform-origin:160px 20px">
       <animateTransform attributeName="transform" type="rotate" values="0;0;0;0;0;38;0" dur="1.5s" repeatCount="indefinite" keyTimes="0;0.2;0.4;0.45;0.5;0.75;1" calcMode="spline" keySplines="0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0.5 0 0.5 1;0.5 0 0.5 1"/>
       <line x1="160" y1="20" x2="160" y2="120" stroke="var(--vp-c-text-3)" stroke-width="1"/>
@@ -88,7 +88,7 @@ onMounted(() => { pick.value = Math.floor(Math.random() * 10) })
     <text x="120" y="170" font-size="10" fill="var(--vp-c-text-2)" font-family="system-ui" font-weight="600" text-anchor="middle">Newton's Cradle</text>
   </svg>
 
-  <!-- 4: Wave -->
+  
   <svg v-else-if="pick===4" viewBox="0 0 320 120" class="pa-svg" aria-label="Wave propagation">
     <defs>
       <clipPath id="wclip"><rect x="0" y="0" width="320" height="120"/></clipPath>
@@ -110,21 +110,21 @@ onMounted(() => { pick.value = Math.floor(Math.random() * 10) })
     <text x="160" y="112" font-size="10" fill="#06b6d4" font-family="system-ui" font-weight="600" text-anchor="middle">Wave Propagation</text>
   </svg>
 
-  <!-- 5: Free Fall -->
+  
   <svg v-else-if="pick===5" viewBox="0 0 160 200" class="pa-svg" aria-label="Free fall">
     <line x1="80" y1="10" x2="80" y2="180" stroke="var(--vp-c-text-3)" stroke-width="1" stroke-dasharray="3 3"/>
     <text x="95" y="50" font-size="8" fill="var(--vp-c-text-3)" font-family="monospace">v=gt</text>
     <text x="95" y="100" font-size="8" fill="var(--vp-c-text-3)" font-family="monospace">2v</text>
     <text x="95" y="150" font-size="8" fill="var(--vp-c-text-3)" font-family="monospace">3v</text>
-    <!-- tick marks -->
+    
     <line x1="76" y1="50"  x2="84" y2="50"  stroke="var(--vp-c-text-3)" stroke-width="1"/>
     <line x1="76" y1="100" x2="84" y2="100" stroke="var(--vp-c-text-3)" stroke-width="1"/>
     <line x1="76" y1="150" x2="84" y2="150" stroke="var(--vp-c-text-3)" stroke-width="1"/>
-    <!-- gravity arrow -->
+    
     <line x1="20" y1="30" x2="20" y2="60" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#garr)"/>
     <text x="26" y="48" font-size="8" fill="#f59e0b" font-family="system-ui">g</text>
     <defs><marker id="garr" markerWidth="5" markerHeight="5" refX="3" refY="2.5" orient="auto"><polygon points="0,0 5,2.5 0,5" fill="#f59e0b"/></marker></defs>
-    <!-- Falling ball -->
+    
     <circle cx="80" r="10" fill="#ef4444">
       <animate attributeName="cy" values="18;168" dur="1.8s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 1 1"/>
       <animate attributeName="opacity" values="1;1;0" dur="1.8s" repeatCount="indefinite" keyTimes="0;0.9;1"/>
@@ -132,10 +132,10 @@ onMounted(() => { pick.value = Math.floor(Math.random() * 10) })
     <text x="80" y="195" font-size="10" fill="#ef4444" font-family="system-ui" font-weight="600" text-anchor="middle">Free Fall  g=9.8 m/s²</text>
   </svg>
 
-  <!-- 6: Spring Oscillation -->
+  
   <svg v-else-if="pick===6" viewBox="0 0 240 160" class="pa-svg" aria-label="Spring oscillation">
     <rect x="8" y="50" width="10" height="60" rx="2" fill="var(--vp-c-text-3)"/>
-    <!-- Spring coils -->
+    
     <path fill="none" stroke="#10b981" stroke-width="2">
       <animate attributeName="d"
         values="M18,80 L30,80 Q35,65 40,80 Q45,95 50,80 Q55,65 60,80 Q65,95 70,80 Q75,65 80,80 Q85,95 90,80 Q95,65 100,80 L108,80;
@@ -143,29 +143,29 @@ onMounted(() => { pick.value = Math.floor(Math.random() * 10) })
                 M18,80 L30,80 Q35,65 40,80 Q45,95 50,80 Q55,65 60,80 Q65,95 70,80 Q75,65 80,80 Q85,95 90,80 Q95,65 100,80 L108,80"
         dur="2s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1"/>
     </path>
-    <!-- Mass block -->
+    
     <rect y="60" width="36" height="40" rx="4" fill="#8b5cf6">
       <animate attributeName="x" values="108;138;108" dur="2s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1"/>
     </rect>
-    <!-- equilibrium line -->
+    
     <line x1="126" y1="115" x2="126" y2="125" stroke="var(--vp-c-text-3)" stroke-width="1" stroke-dasharray="2 2"/>
     <text x="128" y="132" font-size="8" fill="var(--vp-c-text-3)" font-family="system-ui">x=0</text>
     <text x="120" y="152" font-size="10" fill="#10b981" font-family="system-ui" font-weight="600" text-anchor="middle">Spring Oscillation</text>
   </svg>
 
-  <!-- 7: Uniform Circular Motion -->
+  
   <svg v-else-if="pick===7" viewBox="0 0 200 200" class="pa-svg" aria-label="Circular motion">
     <circle cx="100" cy="100" r="70" fill="none" stroke="var(--vp-c-text-3)" stroke-width="1" stroke-dasharray="3 3"/>
     <circle cx="100" cy="100" r="4" fill="var(--vp-c-text-2)"/>
-    <!-- Rotating arm + ball -->
+    
     <g style="transform-origin:100px 100px">
       <animateTransform attributeName="transform" type="rotate" values="0;360" dur="3s" repeatCount="indefinite" calcMode="linear"/>
       <line x1="100" y1="100" x2="170" y2="100" stroke="var(--vp-c-text-3)" stroke-width="1"/>
-      <!-- Ball -->
+      
       <circle cx="170" cy="100" r="10" fill="#f59e0b"/>
-      <!-- velocity vector (tangent = up at right side) -->
+      
       <line x1="170" y1="100" x2="170" y2="68" stroke="#10b981" stroke-width="1.5" marker-end="url(#varr)"/>
-      <!-- centripetal vector (toward center) -->
+      
       <line x1="170" y1="100" x2="142" y2="100" stroke="#ef4444" stroke-width="1.5" marker-end="url(#carr)"/>
     </g>
     <defs>
@@ -175,13 +175,13 @@ onMounted(() => { pick.value = Math.floor(Math.random() * 10) })
     <text x="100" y="188" font-size="10" fill="#f59e0b" font-family="system-ui" font-weight="600" text-anchor="middle">Circular Motion</text>
   </svg>
 
-  <!-- 8: Doppler Effect -->
+  
   <svg v-else-if="pick===8" viewBox="0 0 320 160" class="pa-svg" aria-label="Doppler effect">
-    <!-- Source moving right -->
+    
     <circle r="8" fill="#f59e0b">
       <animateMotion dur="3s" repeatCount="indefinite" path="M40,80 L280,80"/>
     </circle>
-    <!-- Compressed waves front (right) -->
+    
     <circle fill="none" stroke="#ef4444" stroke-width="1.2" opacity="0">
       <animate attributeName="cx" values="80;280" dur="3s" repeatCount="indefinite"/>
       <animate attributeName="cy" values="80;80" dur="3s" repeatCount="indefinite"/>
@@ -194,7 +194,7 @@ onMounted(() => { pick.value = Math.floor(Math.random() * 10) })
       <animate attributeName="r" values="0;28" dur="3s" repeatCount="indefinite" begin="-0.5s"/>
       <animate attributeName="opacity" values="0.8;0" dur="3s" repeatCount="indefinite" begin="-0.5s"/>
     </circle>
-    <!-- Expanded waves behind (left) -->
+    
     <circle fill="none" stroke="#06b6d4" stroke-width="1.2" opacity="0">
       <animate attributeName="cx" values="80;-40" dur="3s" repeatCount="indefinite"/>
       <animate attributeName="cy" values="80;80" dur="3s" repeatCount="indefinite"/>
@@ -212,18 +212,18 @@ onMounted(() => { pick.value = Math.floor(Math.random() * 10) })
     <text x="160" y="152" font-size="10" fill="#f59e0b" font-family="system-ui" font-weight="600" text-anchor="middle">Doppler Effect</text>
   </svg>
 
-  <!-- 9: EM Wave -->
+  
   <svg v-else-if="pick===9" viewBox="0 0 320 160" class="pa-svg" aria-label="Electromagnetic wave">
     <defs><clipPath id="emclip"><rect width="320" height="160"/></clipPath></defs>
     <g clip-path="url(#emclip)">
-      <!-- E-field (vertical, blue) -->
+      
       <path fill="none" stroke="#06b6d4" stroke-width="2">
         <animate attributeName="d"
           values="M0,80 C20,80 30,20 40,80 C50,140 60,80 80,80 C100,80 110,20 120,80 C130,140 140,80 160,80 C180,80 190,20 200,80 C210,140 220,80 240,80 C260,80 270,20 280,80 C290,140 300,80 320,80;
                   M0,80 C20,140 30,80 40,80 C50,80 60,20 80,80 C90,140 100,80 120,80 C130,80 140,20 160,80 C170,140 180,80 200,80 C210,80 220,20 240,80 C250,140 260,80 280,80 C290,80 300,20 320,80"
           dur="1.5s" repeatCount="indefinite" calcMode="linear"/>
       </path>
-      <!-- B-field (horizontal dots, purple) - shown as smaller amplitude dashed -->
+      
       <path fill="none" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="4 2">
         <animate attributeName="d"
           values="M0,80 C20,80 30,50 40,80 C50,110 60,80 80,80 C100,80 110,50 120,80 C130,110 140,80 160,80 C180,80 190,50 200,80 C210,110 220,80 240,80 C260,80 270,50 280,80 C290,110 300,80 320,80;
@@ -231,7 +231,7 @@ onMounted(() => { pick.value = Math.floor(Math.random() * 10) })
           dur="1.5s" repeatCount="indefinite" calcMode="linear"/>
       </path>
     </g>
-    <!-- Direction arrow -->
+    
     <line x1="270" y1="25" x2="305" y2="25" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#earr)"/>
     <text x="270" y="21" font-size="8" fill="#f59e0b" font-family="system-ui">c →</text>
     <defs><marker id="earr" markerWidth="5" markerHeight="5" refX="3" refY="2.5" orient="auto"><polygon points="0,0 5,2.5 0,5" fill="#f59e0b"/></marker></defs>

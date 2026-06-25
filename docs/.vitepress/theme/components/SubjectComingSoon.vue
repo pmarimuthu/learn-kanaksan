@@ -12,7 +12,7 @@ const s = SUBJECTS[subjectId] ?? { id: subjectId, name: subjectId, icon: '📚',
 
 <template>
   <div class="cs-root">
-    <!-- Dynamic orb colors based on subject -->
+    
     <div class="cs-orb cs-orb1" :style="`background: radial-gradient(circle, ${s.color}, transparent)`" aria-hidden="true"></div>
     <div class="cs-orb cs-orb2" :style="`background: radial-gradient(circle, ${s.colorLight}, transparent)`" aria-hidden="true"></div>
 
@@ -24,7 +24,7 @@ const s = SUBJECTS[subjectId] ?? { id: subjectId, name: subjectId, icon: '📚',
         Coming Soon
       </div>
 
-      <!-- Animated subject icon instead of emoji -->
+      
       <div class="cs-icon-wrap">
         <SubjectIcon :subjectId="subjectId" :size="88" />
       </div>

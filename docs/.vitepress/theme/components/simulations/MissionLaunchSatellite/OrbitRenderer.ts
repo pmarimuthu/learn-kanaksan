@@ -1,15 +1,4 @@
-/**
- * OrbitRenderer.ts
- * ------------------------------------------------------------------------
- * Pure canvas-drawing helpers for Mission: Launch a Satellite.
- * No Vue, no DOM lookups — everything here takes a 2D context plus plain
- * data, so it is easy to unit-reason about and keeps EarthCanvas.vue thin.
- *
- * Coordinate convention: world space is metres, Earth-centred, +x East,
- * +y "up" out of the page in the orbital plane (standard maths convention,
- * counter-clockwise positive). Screen space is canvas pixels, origin at
- * the canvas centre, y flipped so "world up" renders as "screen up".
- */
+
 
 import type { FlightStatus, Vec2 } from './types'
 import { EARTH_RADIUS_M } from './PhysicsEngine'
@@ -29,10 +18,6 @@ export function worldToScreen(cam: Camera, p: Vec2): Vec2 {
   return { x: cam.cx + p.x * cam.scale, y: cam.cy - p.y * cam.scale }
 }
 
-/**
- * Smoothly grow/shrink the camera's view radius to keep Earth and the
- * satellite both comfortably in frame, without jarring snaps every frame.
- */
 export function nextViewRadius(
   currentViewRadius: number,
   distanceFromEarth: number,
@@ -60,7 +45,6 @@ interface Star {
   tw: number // twinkle phase
 }
 
-/** Deterministic starfield — seeded so it doesn't re-randomise every render. */
 export function createStarfield(count = 160): Star[] {
   let seed = 1337
   const rand = () => {
@@ -160,7 +144,6 @@ export function drawEarth(ctx: CanvasRenderingContext2D, cam: Camera) {
   ctx.restore()
 }
 
-/** Small marker + flag at the fixed launch pad on Earth's surface. */
 export function drawLaunchPad(ctx: CanvasRenderingContext2D, cam: Camera) {
   const padWorld: Vec2 = { x: EARTH_RADIUS_M, y: 0 }
   const p = worldToScreen(cam, padWorld)

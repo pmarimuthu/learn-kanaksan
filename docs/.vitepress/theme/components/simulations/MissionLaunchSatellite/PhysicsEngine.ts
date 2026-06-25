@@ -1,39 +1,15 @@
-/**
- * PhysicsEngine.ts
- * ------------------------------------------------------------------------
- * Newtonian two-body gravity for "Mission: Launch a Satellite".
- *
- * Design notes
- * - All values here are SI (metres, seconds). Components convert to km /
- *   km·s⁻¹ only at the display boundary.
- * - We use real Earth constants (μ = GM⊕, R⊕) rather than gameplay-scaled
- *   numbers, so the speeds a student discovers here (≈7.9 km/s orbital,
- *   ≈11.2 km/s escape) match the figures already taught on the
- *   Escape Velocity and Satellites pages in this chapter.
- * - Integration uses velocity Verlet (symplectic), which conserves energy
- *   far better than explicit Euler over many orbits — essential for a
- *   simulation students can leave running and trust.
- * - Orbit shape (periapsis/apoapsis) is computed analytically from the
- *   instantaneous state vector every step, using the standard
- *   eccentricity-vector method. That lets the UI classify "will this
- *   crash / orbit / escape" instantly, without forward-simulating.
- */
+
 
 import type { BodyState, FlightStatus, OrbitalElements, Vec2 } from './types'
 
-/** Earth's standard gravitational parameter, GM⊕ (m³/s²). */
 export const MU_EARTH = 3.986004418e14
 
-/** Earth's mean radius (m). */
 export const EARTH_RADIUS_M = 6_371_000
 
-/** Sidereal day — the period a geostationary satellite must match (s). */
 export const SIDEREAL_DAY_S = 86_164.1
 
-/** Karman-line-ish re-entry threshold: below this we call it "Re-entry". */
 export const REENTRY_ALTITUDE_M = 100_000
 
-/** Beyond this multiple of R⊕, an unbound trajectory reads as "Escape". */
 export const ESCAPE_DISPLAY_RADIUS_FACTOR = 3
 
 const TWO_PI = Math.PI * 2
@@ -54,18 +30,12 @@ function clamp(x: number, lo: number, hi: number): number {
   return Math.min(hi, Math.max(lo, x))
 }
 
-/** Gravitational acceleration at position r (Earth at origin). */
 export function accelerationAt(r: Vec2): Vec2 {
   const dist = vecLen(r)
   const k = -MU_EARTH / (dist * dist * dist)
   return { x: r.x * k, y: r.y * k }
 }
 
-/**
- * Advance one fixed physics step using velocity Verlet integration.
- * Stable and energy-conserving for the eccentric, long-running orbits
- * this simulation produces.
- */
 export function verletStep(state: BodyState, dt: number): BodyState {
   const a0 = accelerationAt(state.r)
   const r1: Vec2 = {
@@ -80,27 +50,18 @@ export function verletStep(state: BodyState, dt: number): BodyState {
   return { r: r1, v: v1, t: state.t + dt }
 }
 
-/** Circular orbital speed at distance r from Earth's centre (m/s). */
 export function circularSpeedAt(r: number): number {
   return Math.sqrt(MU_EARTH / r)
 }
 
-/** Escape speed at distance r from Earth's centre (m/s). */
 export function escapeSpeedAt(r: number): number {
   return Math.sqrt((2 * MU_EARTH) / r)
 }
 
-/** Radius of a geostationary orbit, from Earth's centre (m). */
 export function geostationaryRadius(): number {
   return Math.cbrt((MU_EARTH * SIDEREAL_DAY_S * SIDEREAL_DAY_S) / (4 * Math.PI * Math.PI))
 }
 
-/**
- * Build a launch velocity vector at the launch pad.
- * The pad sits at angle 0 on the surface, i.e. r0 = (R⊕, 0).
- * angleDeg = 0   → fully tangential (counter-clockwise, the "easy orbit" direction)
- * angleDeg = 90  → fully radial (straight up)
- */
 export function launchVelocity(angleDeg: number, speedMs: number): Vec2 {
   const a = (angleDeg * Math.PI) / 180
   // Tangential unit vector (ccw) at (R,0) is (0,1); radial unit vector is (1,0).
@@ -110,12 +71,6 @@ export function launchVelocity(angleDeg: number, speedMs: number): Vec2 {
   }
 }
 
-/**
- * Derive orbital elements (energy, eccentricity, periapsis/apoapsis, ...)
- * analytically from a single state vector. This is what lets the engine
- * answer "is this orbit going to hit the ground?" the instant the rocket
- * leaves the pad, instead of waiting for it to happen.
- */
 export function computeOrbitalElements(r: Vec2, v: Vec2): OrbitalElements {
   const rMag = vecLen(r)
   const vMag2 = v.x * v.x + v.y * v.y
@@ -172,12 +127,6 @@ export interface ClassifyInput {
   timeSinceLaunch: number
 }
 
-/**
- * Translate live physics into one of the six student-facing flight states.
- * The periapsis/apoapsis test means we can say "Orbit Achieved" or
- * "this will crash" immediately — the small time-since-launch hold on
- * "Orbit Achieved" just gives the moment a beat before the badge flips.
- */
 export function classifyFlightStatus(input: ClassifyInput): FlightStatus {
   const { r, v, launched, crashed, timeSinceLaunch } = input
   if (!launched) return 'preparing'
@@ -208,16 +157,6 @@ export function classifyFlightStatus(input: ClassifyInput): FlightStatus {
   return 'ascending'
 }
 
-/**
- * Sample the exact analytic path (ellipse / hyperbola / degenerate line)
- * a launch would follow, starting from the pad. Pure geometry — no time
- * stepping — so it is cheap enough to redraw live as the student drags
- * sliders, before they commit to a launch.
- *
- * Returns points in metres, Earth-centred. Stops at the point the path
- * would first cross the surface ("the crash point"), after one full
- * revolution for a clean orbit, or once a hyperbola has clearly departed.
- */
 export function computeOrbitPreviewPath(r0: Vec2, v0: Vec2, maxPoints = 480): Vec2[] {
   const speed = vecLen(v0)
   if (!Number.isFinite(speed) || speed < 1) return [r0]

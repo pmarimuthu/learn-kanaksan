@@ -14,8 +14,8 @@
   letter-spacing: -0.015em;
 }
 
-/* NavBrand icon sits flush left of the title text */
-.VPNavBarTitle { display: flex; align-items: center; gap: 6px; }
+/* NavBrand icon aligns with title text inside the <a> */
+.VPNavBarTitle .title { display: flex; align-items: center; gap: 6px; }
 
 /* content-body holds [nav-bar-content-before slot] + nav links */
 .VPNavBar .content .content-body {
@@ -31,8 +31,10 @@
   margin-left: auto;
 }
 
-/* Hide VitePress's built-in appearance toggle — we put it inside the waffle */
-.VPNavBar .VPNavBarAppearance { display: none !important; }
+/* Hide VitePress's built-in appearance toggle — handled by the waffle menu */
+.VPNavBarAppearance,
+.VPNavBarExtra,
+.VPNavScreenAppearance { display: none !important; }
 
 /* ── App-wide font — driven by --app-font-family (set from site.config.json active font) ── */
 :root {
@@ -44,37 +46,59 @@ body {
 }
 
 /* ── Sidebar toggle (desktop ≥960px only) ── */
-
-/*
- * Strategy: override --vp-sidebar-width to 0 when collapsed.
- * VitePress uses this variable internally for both sidebar width
- * AND content padding-left, so one override handles both.
- * Use a separate --pc-sb-w for the translation so it doesn't inherit 0.
- */
-:root { --pc-sb-w: 272px; }
-
 @media (min-width: 960px) {
-  /* Collapsed: zero out the width variable → content auto-reflows */
   body.pc-sb-closed {
-    --vp-sidebar-width: 0px;
+    --vp-sidebar-width: 36px;
   }
-  /* Slide sidebar off-screen using the fixed pixel value */
   body.pc-sb-closed .VPSidebar {
-    transform: translateX(calc(-1 * var(--pc-sb-w))) !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
+    width: 36px !important;
+    overflow: hidden;
   }
-
-  /* Animate only after first user click (pc-sb-anim set in JS) */
+  body.pc-sb-closed .VPSidebar .curtain,
+  body.pc-sb-closed .VPSidebar .nav .group {
+    opacity: 0;
+    pointer-events: none;
+  }
+  body.pc-sb-closed .pc-sb-btn-row {
+    padding: 10px 5px 6px;
+    justify-content: center;
+  }
   body.pc-sb-anim .VPSidebar {
-    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
-                visibility 0s linear 0.28s;
+    transition: width 0.26s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  /* When opening: visibility restores immediately, then slides in */
-  body.pc-sb-anim:not(.pc-sb-closed) .VPSidebar {
-    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
-                visibility 0s linear;
+  body.pc-sb-anim .VPSidebar .curtain,
+  body.pc-sb-anim .VPSidebar .nav .group {
+    transition: opacity 0.18s;
   }
+}
+
+.pc-sb-btn-row {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 12px 6px;
+}
+
+.pc-sb-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid var(--vp-c-divider);
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: border-color 0.15s, color 0.15s;
+}
+.pc-sb-btn:hover {
+  border-color: var(--vp-c-brand-1);
+  color: var(--vp-c-brand-1);
+}
+@media (max-width: 959px) {
+  .pc-sb-btn-row { display: none; }
 }
 
 :root {

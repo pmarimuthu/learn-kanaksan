@@ -1,23 +1,4 @@
-<!--
-  PageBreadcrumb.vue
-  ─────────────────────────────────────────────────────────────
-  Sticky strip just below the navbar.
-  Format:  CBSE › 11 › Phy                (subject home)
-           CBSE › 11 › Phy › Ch 01        (chapter index)
-           CBSE › 11 › Phy › Ch 01 › Le 02 (lesson page)
 
-  Each segment: compact label + title tooltip + href.
-  Last segment has no link (current page).
-  Hidden on the root landing page (/).
-
-  Props:
-    subjectId — override auto-detection from URL (optional)
-
-  Driven by:
-    site.config.json    → board / classes / subjects.shortCode
-    breadcrumb.config.ts → CHAPTERS / lessonInfo()
-  ─────────────────────────────────────────────────────────────
--->
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute } from 'vitepress'
@@ -142,8 +123,6 @@ const crumbs = computed((): Crumb[] | null => {
   align-items: center;
 }
 
-/* On custom-layout pages (HomeLanding etc.) there's no VitePress nav,
-   so the strip sits naturally below SubjectHeader — no sticky needed */
 .pb-strip.pb-static {
   position: static;
 }

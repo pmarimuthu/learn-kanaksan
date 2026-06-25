@@ -17,7 +17,7 @@ async function boot() {
     import('three/examples/jsm/controls/OrbitControls.js'),
   ])
 
-  /* ── sprite helper ─────────────────────── */
+  
   function makeSprite(text: string, color = '#e2e8f0', scaleXY = [2.4, 0.8]) {
     const cv = document.createElement('canvas')
     cv.width = 512; cv.height = 128
@@ -35,7 +35,7 @@ async function boot() {
     return sp
   }
 
-  /* ── renderer / camera / controls ─────── */
+  
   const W = c.clientWidth  || 360
   const H = c.clientHeight || 240
 
@@ -58,7 +58,7 @@ async function boot() {
   pt.position.set(2, 5, 5)
   scene.add(pt)
 
-  /* ── dispatch scene ────────────────────── */
+  
   let extraDraw = () => {}
 
   if (props.type === 'si-units') {
@@ -88,9 +88,6 @@ async function boot() {
   loop()
 }
 
-/* ══════════════════════════════════════════
-   Scene 1 — SI Units: 7-unit orbit ring
-   ══════════════════════════════════════════ */
 function buildSiUnits(THREE: any, scene: any, makeSprite: Function) {
   const units = [
     { sym: 'm',   name: 'metre',    hex: 0x3b82f6 },
@@ -135,10 +132,6 @@ function buildSiUnits(THREE: any, scene: any, makeSprite: Function) {
   return () => { ring.rotation.y += 0.004 }
 }
 
-/* ══════════════════════════════════════════
-   Scene 2 — Significant Figures: bar chart
-   0.00405 → 3 sig figs (4, 0, 5)
-   ══════════════════════════════════════════ */
 function buildSigFigs(THREE: any, scene: any, makeSprite: Function) {
   // char list; sig=true means significant, sig=null means punctuation
   const chars: { ch: string; sig: boolean | null }[] = [
@@ -191,9 +184,6 @@ function buildSigFigs(THREE: any, scene: any, makeSprite: Function) {
   return () => {}
 }
 
-/* ══════════════════════════════════════════
-   Scene 3 — Dimensions: MLT axis space
-   ══════════════════════════════════════════ */
 function buildDimensions(THREE: any, scene: any, makeSprite: Function) {
   const L = 3.2
 
@@ -258,10 +248,6 @@ function buildDimensions(THREE: any, scene: any, makeSprite: Function) {
   return () => {}
 }
 
-/* ══════════════════════════════════════════
-   Scene 4 — Dimensional Analysis: balance
-   [F] = MLT⁻²  ↔  kg·m·s⁻²
-   ══════════════════════════════════════════ */
 function buildDimAnalysis(THREE: any, scene: any, makeSprite: Function) {
   // Pivot pole
   scene.add(new THREE.Mesh(
