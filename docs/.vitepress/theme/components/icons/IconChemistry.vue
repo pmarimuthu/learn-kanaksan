@@ -28,16 +28,7 @@ defineProps<{ size?: number }>()
     </defs>
 
     
-    <g>
-      <animateTransform
-        attributeName="transform"
-        type="translate"
-        values="0,0; 2.5,0; 0,0; -2.5,0; 0,0"
-        keyTimes="0; 0.25; 0.5; 0.75; 1"
-        calcMode="spline"
-        keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1"
-        dur="2.8s"
-        repeatCount="indefinite"/>
+    <g class="flask-shake">
 
       
       <rect x="15" y="1" width="10" height="14" rx="2"
@@ -79,3 +70,18 @@ defineProps<{ size?: number }>()
     </g>
   </svg>
 </template>
+
+<style scoped>
+.flask-shake {
+  transform-origin: 50% 90%;
+  animation: flask-wiggle 2.2s ease-in-out infinite;
+}
+@keyframes flask-wiggle {
+  0%,  100% { transform: rotate(0deg); }
+  25%       { transform: rotate(-9deg); }
+  75%       { transform: rotate(9deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flask-shake { animation: none; }
+}
+</style>
