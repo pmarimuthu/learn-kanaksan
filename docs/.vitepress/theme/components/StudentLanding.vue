@@ -71,7 +71,7 @@ function toggleDark() {
           <span class="sl-logo-emoji">📚</span>
         </div>
         <div class="sl-logo-text">
-          <span class="sl-logo-name">Student's Companion</span>
+          <span class="sl-logo-name">Students' Companion</span>
           <span class="sl-logo-tagline">Learn it. Get it. Ace it.</span>
         </div>
       </div>
