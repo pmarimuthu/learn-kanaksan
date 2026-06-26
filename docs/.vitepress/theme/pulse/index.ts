@@ -1,5 +1,5 @@
 import { getFingerprint } from './fingerprint'
-import { recordVisit } from './tracker'
+import { recordVisit, saveRating, saveIssue } from './tracker'
 
 const PROJECT_ID = import.meta.env.VITE_PULSE_ANALYTICS_KEY as string
 const ALLOWED_HOST = 'learn.kanaksan.com'
@@ -18,5 +18,23 @@ export async function trackVisit(pageKey: string): Promise<void> {
     await recordVisit(PROJECT_ID, pageKey, fingerprintId)
   } catch (err) {
     console.warn('[pulse]', err)
+  }
+}
+
+export async function submitRating(pageKey: string, score: number): Promise<void> {
+  try {
+    const fingerprintId = await getFingerprint()
+    await saveRating(PROJECT_ID, pageKey, fingerprintId, score)
+  } catch (err) {
+    console.warn('[pulse:rating]', err)
+  }
+}
+
+export async function submitIssue(pageKey: string, category: string, comment: string): Promise<void> {
+  try {
+    const fingerprintId = await getFingerprint()
+    await saveIssue(PROJECT_ID, pageKey, fingerprintId, category, comment)
+  } catch (err) {
+    console.warn('[pulse:issue]', err)
   }
 }

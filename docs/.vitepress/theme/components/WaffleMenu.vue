@@ -1,8 +1,17 @@
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, defineAsyncComponent } from 'vue'
 import { SUBJECTS_LIST, SITE } from '../subjects'
 import SubjectIcon from './SubjectIcon.vue'
+
+const RatingWidget = defineAsyncComponent(() => import('./RatingWidget.vue'))
+const ReportIssue  = defineAsyncComponent(() => import('./ReportIssue.vue'))
+
+const showRating = ref(false)
+const showReport = ref(false)
+
+function openRating() { menuOpen.value = false; showRating.value = true }
+function openReport()  { menuOpen.value = false; showReport.value  = true }
 
 const LS_DARK = 'vitepress-theme-appearance'
 
@@ -91,7 +100,24 @@ function goToSubject(path: string | undefined, status: string) {
         <span>{{ isDark ? 'Light mode' : 'Dark mode' }}</span>
         <span class="wm-toggle" :class="{ on: isDark }"></span>
       </button>
+
+      <div class="wm-divider" />
+
+      <button class="wm-item" @click="openRating">
+        <span class="wm-emoji">🚀</span>
+        <span>Rate Us</span>
+      </button>
+
+      <button class="wm-item" @click="openReport">
+        <span class="wm-emoji">🪲</span>
+        <span>Report an issue</span>
+      </button>
     </div>
+
+    <Teleport to="body">
+      <RatingWidget v-if="showRating" @close="showRating = false" />
+      <ReportIssue  v-if="showReport" @close="showReport = false" />
+    </Teleport>
   </div>
 </template>
 

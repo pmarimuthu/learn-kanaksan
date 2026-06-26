@@ -1,6 +1,6 @@
 import {
   doc, getDoc, setDoc, updateDoc,
-  increment, serverTimestamp,
+  increment, serverTimestamp, addDoc, collection,
 } from 'firebase/firestore'
 import { db } from './config'
 
@@ -75,4 +75,34 @@ export async function recordVisit(
       unique: isNewToPage ? increment(1) : increment(0),
     })
   }
+}
+
+export async function saveRating(
+  projectId: string,
+  pageKey: string,
+  fingerprintId: string,
+  score: number
+): Promise<void> {
+  await addDoc(collection(db, PROJECTS, projectId, 'ratings'), {
+    pageKey,
+    fingerprintId,
+    score,
+    ts: serverTimestamp(),
+  })
+}
+
+export async function saveIssue(
+  projectId: string,
+  pageKey: string,
+  fingerprintId: string,
+  category: string,
+  comment: string
+): Promise<void> {
+  await addDoc(collection(db, PROJECTS, projectId, 'issues'), {
+    pageKey,
+    fingerprintId,
+    category,
+    comment,
+    ts: serverTimestamp(),
+  })
 }
