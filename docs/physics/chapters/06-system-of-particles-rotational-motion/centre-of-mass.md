@@ -1,5 +1,5 @@
 ---
-description: "Centre of mass for Class 11 Physics (NCERT) — definition, formula, motion. Notes with uniform rod and lamina examples for JEE Main, KCET, Karnataka PU."
+description: "Centre of mass for Class 11 Physics (NCERT) — definition, formula, motion. Notes with uniform rod and lamina examples."
 ---
 
 # Centre of Mass

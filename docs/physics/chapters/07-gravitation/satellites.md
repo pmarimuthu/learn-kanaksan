@@ -1,5 +1,5 @@
 ---
-description: "Satellites and orbital velocity for Class 11 Physics (NCERT). Orbital speed, time period, geostationary orbit. Notes for JEE Main, KCET, Karnataka PU."
+description: "Satellites and orbital velocity for Class 11 Physics (NCERT). Orbital speed, time period, geostationary orbit. Notes."
 ---
 
 # Satellites & Orbital Motion

@@ -1,5 +1,5 @@
 ---
-description: "The 7 SI base units and physical quantities explained for Class 11 Physics (NCERT). Concept-first notes with real examples for JEE Main, KCET, Karnataka PU."
+description: "The 7 SI base units and physical quantities explained for Class 11 Physics (NCERT). Concept-first notes with real examples"
 ---
 
 # Physical Quantities & SI Units

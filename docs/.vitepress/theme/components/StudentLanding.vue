@@ -29,6 +29,12 @@ const currentSubjects = computed(() =>
   selectedClass.value ? (subjectsByClass[selectedClass.value] ?? SUBJECTS_LIST) : SUBJECTS_LIST
 )
 
+const hint = computed(() => {
+  if (!selectedClass.value) return 'class'
+  if (!selectedSubject.value) return 'subject'
+  return null
+})
+
 const startPath = computed(() => {
   if (!selectedClass.value || !selectedSubject.value) return null
   const sub = currentSubjects.value.find(s => s.id === selectedSubject.value)
@@ -41,7 +47,10 @@ function selectClass(id: string) {
     selectedSubject.value = null
   } else {
     selectedClass.value = id
-    selectedSubject.value = null
+    const available = subjectsByClass[id] ?? []
+    if (!available.find(s => s.id === selectedSubject.value)) {
+      selectedSubject.value = null
+    }
   }
 }
 
@@ -78,7 +87,7 @@ function toggleDark() {
 
       <div class="sl-card">
         <div class="sl-row-header">
-          <p class="sl-card-label">Select your class</p>
+          <p class="sl-card-label" :class="{ 'sl-hint': hint === 'class' }">Select your class</p>
           <button class="sl-dark-toggle" :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'" @click="toggleDark">
             <svg v-if="isDark" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path d="M10 2a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1Zm4.22 2.78a1 1 0 0 1 0 1.42l-.71.7a1 1 0 1 1-1.41-1.41l.7-.71a1 1 0 0 1 1.42 0ZM17 9a1 1 0 1 1 0 2h-1a1 1 0 1 1 0-2h1Zm-2.78 5.22a1 1 0 0 1-1.42 0l-.7-.71a1 1 0 1 1 1.41-1.41l.71.7a1 1 0 0 1 0 1.42ZM11 16a1 1 0 1 1-2 0v-1a1 1 0 1 1 2 0v1Zm-5.22-1.78a1 1 0 0 1 0-1.42l.71-.7a1 1 0 1 1 1.41 1.41l-.7.71a1 1 0 0 1-1.42 0ZM4 11a1 1 0 1 1 0-2h1a1 1 0 1 1 0 2H4Zm1.78-6.22a1 1 0 0 1 1.42 0l.7.71A1 1 0 1 1 6.49 6.9l-.71-.7a1 1 0 0 1 0-1.42ZM10 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/>
@@ -102,7 +111,9 @@ function toggleDark() {
           </button>
         </div>
 
-        <p class="sl-card-label">Select your subject</p>
+        <hr class="sl-divider" />
+
+        <p class="sl-card-label" :class="{ 'sl-hint': hint === 'subject' }">Select your subject</p>
         <div class="sl-subject-grid">
           <button
             v-for="s in currentSubjects"
@@ -117,11 +128,13 @@ function toggleDark() {
           </button>
         </div>
 
+        <hr class="sl-divider" />
+
         <button class="sl-start-btn" :disabled="!startPath" @click="go">
           Start Learning →
         </button>
 
-        <p class="sl-board-note">NCERT · CBSE · Karnataka PU Board · JEE · KCET</p>
+        <p class="sl-board-note">NCERT · CBSE · State Board &nbsp;|&nbsp; IIT · JEE · NEET</p>
       </div>
     </main>
 
@@ -365,5 +378,22 @@ function toggleDark() {
   color: var(--vp-c-text-3);
 }
 
+.sl-divider {
+  border: none;
+  border-top: 1px solid var(--vp-c-divider);
+  margin: 4px 0;
+}
+
 :root.dark .sl-orb { opacity: 0.12; }
+
+@keyframes sl-breathe {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.04); }
+}
+.sl-hint {
+  color: var(--vp-c-brand-1);
+  animation: sl-breathe 1.8s ease-in-out infinite;
+  transform-origin: left center;
+  font-size: 0.78rem;
+}
 </style>

@@ -1,5 +1,5 @@
 ---
-description: "Escape velocity for Class 11 Physics — derive v = √(2gR). Why the moon has no atmosphere. NCERT notes for JEE Main, KCET, Karnataka PU."
+description: "Escape velocity for Class 11 Physics — derive v = √(2gR). Why the moon has no atmosphere. NCERT notes."
 ---
 
 # Escape Velocity

@@ -1,5 +1,5 @@
 ---
-description: "Significant figures rules for Class 11 Physics — counting, rounding, precision vs accuracy. NCERT notes with examples for JEE Main, KCET, Karnataka PU."
+description: "Significant figures rules for Class 11 Physics — counting, rounding, precision vs accuracy. NCERT notes with examples."
 ---
 
 # Significant Figures

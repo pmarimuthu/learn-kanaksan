@@ -1,5 +1,5 @@
 ---
-description: "Wave motion for Class 11 Physics (NCERT) — transverse and longitudinal waves, wavelength, frequency, speed. Notes for JEE Main, KCET, Karnataka PU."
+description: "Wave motion for Class 11 Physics (NCERT) — transverse and longitudinal waves, wavelength, frequency, speed. Notes."
 ---
 
 # Wave Motion

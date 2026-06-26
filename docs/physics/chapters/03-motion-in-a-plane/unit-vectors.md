@@ -1,5 +1,5 @@
 ---
-description: "Unit vectors i, j, k for Class 11 Physics (NCERT) — magnitude 1, direction only. Properties and usage in problems for JEE Main, KCET, Karnataka PU."
+description: "Unit vectors i, j, k for Class 11 Physics (NCERT) — magnitude 1, direction only. Properties and usage in problems."
 ---
 
 # Unit Vectors

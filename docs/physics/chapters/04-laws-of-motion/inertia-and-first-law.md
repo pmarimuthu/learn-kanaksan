@@ -1,5 +1,5 @@
 ---
-description: "Newton's First Law and inertia for Class 11 Physics (NCERT). Why objects resist change in motion — clear notes for JEE Main, KCET, Karnataka PU."
+description: "Newton's First Law and inertia for Class 11 Physics (NCERT). Why objects resist change in motion — clear notes."
 ---
 
 # Inertia & Newton's First Law

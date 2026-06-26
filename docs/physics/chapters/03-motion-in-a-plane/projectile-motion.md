@@ -1,5 +1,5 @@
 ---
-description: "Projectile motion for Class 11 Physics — range, max height, time of flight formulae with interactive 3D demo. NCERT notes for JEE Main, KCET, Karnataka PU."
+description: "Projectile motion for Class 11 Physics — range, max height, time of flight formulae with interactive 3D demo. NCERT notes."
 ---
 
 # Projectile Motion

@@ -19,7 +19,7 @@ const features = [
     <SubjectHeader subjectId="physics" chaptersLink="/physics/chapters/" />
 
     <SubjectHero
-      badge="Class 11 · Karnataka PU · NCERT"
+      badge="Class 11 · NCERT · CBSE"
       title="Physics that"
       accent="makes sense"
       tagline="Concept first. Formula second. One real example. Then you own it."
@@ -27,7 +27,7 @@ const features = [
       primaryLink="/physics/chapters/"
       secondaryLabel="Try a Lesson"
       secondaryLink="/physics/chapters/01-units-and-measurement/dimensional-analysis"
-      :exams="['JEE Main', 'JEE Advanced', 'KCET / KEA', 'Karnataka PU Board']"
+      :exams="['IIT', 'JEE', 'NEET']"
     >
       <template #animation>
         <PhysicsAnim />

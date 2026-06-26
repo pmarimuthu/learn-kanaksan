@@ -9,8 +9,9 @@ defineProps<{
 
 <template>
   <div class="pc-meta">
-    <span class="chip">📘 NCERT Ch. {{ chapter }}</span>
+    <span class="chip">NCERT</span>
+    <span class="chip">Ch. {{ chapter }}</span>
     <span class="chip">§ {{ section }}</span>
-    <span v-if="page" class="chip">p. {{ page }}</span>
+    <span v-if="page" class="chip">pg. {{ page }}</span>
   </div>
 </template>

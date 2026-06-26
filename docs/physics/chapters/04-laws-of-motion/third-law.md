@@ -1,5 +1,5 @@
 ---
-description: "Newton's Third Law for Class 11 Physics — action and reaction pairs. NCERT notes with rocket and walking examples for JEE Main, KCET, Karnataka PU."
+description: "Newton's Third Law for Class 11 Physics — action and reaction pairs. NCERT notes with rocket and walking examples."
 ---
 
 # Newton's Third Law

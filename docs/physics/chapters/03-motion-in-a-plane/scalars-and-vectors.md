@@ -1,5 +1,5 @@
 ---
-description: "Scalars and vectors for Class 11 Physics — definitions, types and properties. NCERT Chapter 3 notes with real examples for JEE Main, KCET, Karnataka PU."
+description: "Scalars and vectors for Class 11 Physics — definitions, types and properties. NCERT Chapter 3 notes with real examples."
 ---
 
 # Scalars and Vectors

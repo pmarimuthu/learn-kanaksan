@@ -1,5 +1,5 @@
 ---
-description: "Stress and strain for Class 11 Physics (NCERT) — definitions, types and units. Tensile, compressive, shear. Notes for JEE Main, KCET, Karnataka PU."
+description: "Stress and strain for Class 11 Physics (NCERT) — definitions, types and units. Tensile, compressive, shear. Notes."
 ---
 
 # Stress and Strain

@@ -1,5 +1,5 @@
 ---
-description: "Fluid pressure and Pascal's law for Class 11 Physics (NCERT). Hydraulic machines, atmospheric pressure. Notes for JEE Main, KCET, Karnataka PU."
+description: "Fluid pressure and Pascal's law for Class 11 Physics (NCERT). Hydraulic machines, atmospheric pressure. Notes."
 ---
 
 # Pressure & Pascal's Law

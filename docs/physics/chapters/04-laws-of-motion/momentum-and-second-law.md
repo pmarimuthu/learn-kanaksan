@@ -1,5 +1,5 @@
 ---
-description: "Newton's Second Law F=ma for Class 11 Physics (NCERT). Momentum, force and acceleration — notes with examples for JEE Main, KCET, Karnataka PU."
+description: "Newton's Second Law F=ma for Class 11 Physics (NCERT). Momentum, force and acceleration — notes with examples."
 ---
 
 # Momentum & Newton's Second Law
