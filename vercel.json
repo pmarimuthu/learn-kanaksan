@@ -1,5 +1,11 @@
 {
-  "rewrites": [
-    { "source": "/11/physics/:path*", "destination": "/:path*" }
+  "buildCommand": "npm run docs:build",
+  "outputDirectory": "docs/.vitepress/dist",
+  "framework": null,
+  "redirects": [
+    { "source": "/physics/:path*", "destination": "/ncert/class11/physics/:path*", "permanent": true },
+    { "source": "/chemistry/:path*", "destination": "/ncert/class11/chemistry/:path*", "permanent": true },
+    { "source": "/maths/:path*", "destination": "/ncert/class11/maths/:path*", "permanent": true },
+    { "source": "/biology/:path*", "destination": "/ncert/class11/biology/:path*", "permanent": true }
   ]
 }
