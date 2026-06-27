@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute } from 'vitepress'
-import { resolvePageKey } from '../pulse/pagekey'
 import { submitRating } from '../pulse'
 
 const route = useRoute()
@@ -19,7 +18,9 @@ const emit = defineEmits<{ close: [] }>()
 const selected = ref<number | null>(null)
 const submitted = ref(false)
 
-const pageKey = resolvePageKey
+function pageKey(path: string) {
+  return path.replace(/^\/|\/$/g, '').replace(/\//g, '_') || 'home'
+}
 
 async function pick(score: number) {
   if (submitted.value) return

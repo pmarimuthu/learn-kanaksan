@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute } from 'vitepress'
-import { resolvePageKey } from '../pulse/pagekey'
 import { submitIssue } from '../pulse'
 
 const route = useRoute()
@@ -23,7 +22,9 @@ const comment  = ref('')
 const sending  = ref(false)
 const done     = ref(false)
 
-const pageKey = resolvePageKey
+function pageKey(path: string) {
+  return path.replace(/^\/|\/$/g, '').replace(/\//g, '_') || 'home'
+}
 
 async function submit() {
   if (sending.value || done.value) return
