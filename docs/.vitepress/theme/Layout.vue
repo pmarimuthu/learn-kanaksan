@@ -3,6 +3,7 @@ import DefaultTheme from 'vitepress/theme'
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, useData } from 'vitepress'
 import { trackVisit } from './pulse'
+import { resolvePageKey } from './pulse/pagekey'
 import HomeLanding from './components/HomeLanding.vue'
 import StudentLanding from './components/StudentLanding.vue'
 import SubjectComingSoon from './components/SubjectComingSoon.vue'
@@ -82,9 +83,7 @@ function onSbKey(e) {
   }
 }
 
-function pageKey(path) {
-  return path.replace(/^\/|\/$/g, '').replace(/\//g, '_') || 'home'
-}
+const pageKey = resolvePageKey
 
 watch(() => route.path, (path) => {
   setTimeout(collapseOthers, 80)
