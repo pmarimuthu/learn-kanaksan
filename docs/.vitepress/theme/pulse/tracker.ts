@@ -3,16 +3,12 @@ import {
   increment, serverTimestamp, addDoc, collection,
 } from 'firebase/firestore'
 import { db } from './config'
+import { checkIsNew, recordFingerprint } from './uniqueness'
 
-const VISITORS = 'visitors'
 const PROJECTS = 'projects'
 
 function todayISO(): string {
   return new Date().toISOString().slice(0, 10)
-}
-
-function lsKey(type: string, projectId: string, extra = '') {
-  return `pulse_${type}_${projectId}${extra ? '_' + extra : ''}`
 }
 
 export async function recordVisit(
@@ -21,11 +17,9 @@ export async function recordVisit(
   fingerprintId: string
 ): Promise<void> {
   const today = todayISO()
+  const { isNewToProject, isNewToPage } = await checkIsNew(projectId, fingerprintId, pageKey)
 
-  const isNewToProject = !localStorage.getItem(lsKey('proj', projectId))
-  const isNewToPage    = !localStorage.getItem(lsKey('page', projectId, pageKey))
-  if (isNewToProject) localStorage.setItem(lsKey('proj', projectId), '1')
-  if (isNewToPage)    localStorage.setItem(lsKey('page', projectId, pageKey), '1')
+  await recordFingerprint(projectId, fingerprintId, pageKey, isNewToProject, isNewToPage)
 
   const statsRef  = doc(db, PROJECTS, projectId, 'stats', 'global')
   const statsSnap = await getDoc(statsRef)
@@ -42,7 +36,6 @@ export async function recordVisit(
   }
 
   if (!pageKey) return
-
   const pageRef  = doc(db, PROJECTS, projectId, 'pages', pageKey)
   const pageSnap = await getDoc(pageRef)
   if (!pageSnap.exists()) {
@@ -53,14 +46,6 @@ export async function recordVisit(
       unique: isNewToPage ? increment(1) : increment(0),
     })
   }
-
-  try {
-    await setDoc(
-      doc(db, VISITORS, fingerprintId),
-      { firstSeen: serverTimestamp(), lastSeen: serverTimestamp() },
-      { merge: true }
-    )
-  } catch (_) {}
 }
 
 export async function saveRating(
