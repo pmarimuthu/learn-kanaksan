@@ -1,5 +1,5 @@
 import {
-  doc, getDoc, setDoc, updateDoc,
+  doc, setDoc, updateDoc,
   increment, serverTimestamp, addDoc, collection,
 } from 'firebase/firestore'
 import { db } from './config'
@@ -33,35 +33,26 @@ export async function recordVisit(
     recordFingerprint(projectId, fingerprintId, pageKey, isNewToProject, isNewToPage))
 
   await step('stats', async () => {
-    const statsRef  = doc(db, PROJECTS, projectId, 'stats', 'global')
-    const statsSnap = await getDoc(statsRef)
-    if (!statsSnap.exists()) {
-      await setDoc(statsRef, { total: 1, unique: 1, todayCount: 1, todayDate: today })
-    } else {
-      const d = statsSnap.data()
-      await updateDoc(statsRef, {
-        total:      increment(1),
-        unique:     isNewToProject ? increment(1) : increment(0),
-        todayCount: d.todayDate === today ? increment(1) : 1,
-        todayDate:  today,
-      })
-    }
+    const statsRef = doc(db, PROJECTS, projectId, 'stats', 'global')
+    const snap = await import('firebase/firestore').then(m => m.getDoc(statsRef))
+    const prevDate = snap.exists() ? snap.data().todayDate : null
+    await setDoc(statsRef, {
+      total:      increment(1),
+      unique:     increment(isNewToProject ? 1 : 0),
+      todayCount: prevDate === today ? increment(1) : 1,
+      todayDate:  today,
+    }, { merge: true })
   })
 
   if (!pageKey) return
 
-  await step('pages', async () => {
-    const pageRef  = doc(db, PROJECTS, projectId, 'pages', pageKey)
-    const pageSnap = await getDoc(pageRef)
-    if (!pageSnap.exists()) {
-      await setDoc(pageRef, { pageKey, total: 1, unique: isNewToPage ? 1 : 0 })
-    } else {
-      await updateDoc(pageRef, {
-        total:  increment(1),
-        unique: isNewToPage ? increment(1) : increment(0),
-      })
-    }
-  })
+  await step('pages', () =>
+    setDoc(doc(db, PROJECTS, projectId, 'pages', pageKey), {
+      pageKey,
+      total:  increment(1),
+      unique: increment(isNewToPage ? 1 : 0),
+    }, { merge: true })
+  )
 }
 
 export async function saveRating(

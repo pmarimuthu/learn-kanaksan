@@ -42,15 +42,16 @@ export async function recordFingerprint(
   isNewToPage: boolean
 ): Promise<void> {
   const fpRef = doc(db, PROJECTS, projectId, 'fingerprints', fingerprintId)
-  if (isNewToProject) {
-    await setDoc(fpRef, { firstSeen: serverTimestamp(), lastSeen: serverTimestamp() })
-  } else {
-    await updateDoc(fpRef, { lastSeen: serverTimestamp() })
-  }
+  const fpData = isNewToProject
+    ? { firstSeen: serverTimestamp(), lastSeen: serverTimestamp() }
+    : { lastSeen: serverTimestamp() }
+  await setDoc(fpRef, fpData, { merge: true })
+
   if (isNewToPage) {
     await setDoc(
       doc(db, PROJECTS, projectId, 'fingerprints', fingerprintId, 'pages', pageKey),
-      { firstSeen: serverTimestamp(), lastSeen: serverTimestamp() }
+      { firstSeen: serverTimestamp(), lastSeen: serverTimestamp() },
+      { merge: true }
     )
   }
 }
