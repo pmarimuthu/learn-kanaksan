@@ -3,6 +3,11 @@ import WasmHero from './WasmHero.vue'
 import FeelHero from './FeelHero.vue'
 import MeasurementLab from './labs/MeasurementLab.vue'
 import SpeedDistanceLab from './labs/SpeedDistanceLab.vue'
+import HookesLawLab from './labs/HookesLawLab.vue'
+import ElasticModuliLab from './labs/ElasticModuliLab.vue'
+import StressStrainLab from './labs/StressStrainLab.vue'
+import ApplicationsLab from './labs/ApplicationsLab.vue'
+import PascalLab from './labs/PascalLab.vue'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import CAPTIONS from '../data/concept-captions.json'
 import conceptConfig from '../data/concept-config.json'
@@ -11,7 +16,7 @@ const props = defineProps<{ type: string; caption?: string; open?: boolean }>()
 
 const cap = computed(() => props.caption ?? (CAPTIONS as Record<string, string>)[props.type] ?? '')
 const isOpen       = ref(props.open ?? true)
-const tab          = ref<'svg'|'wasm'|'three'|'feel'>('svg')
+const tab          = ref<'svg'|'wasm'|'three'|'feel'|'lab'>('svg')
 const isFullscreen = ref(false)
 
 const WASM_TYPES = new Set(conceptConfig.wasmTypes)
@@ -74,6 +79,41 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
         v-else-if="
           tab === 'lab' &&
           type === 'velocity-speed'
+        "
+      />
+
+      <HookesLawLab
+        v-else-if="
+          tab === 'lab' &&
+          type === 'hookes-law'
+        "
+      />
+
+      <ElasticModuliLab
+        v-else-if="
+          tab === 'lab' &&
+          type === 'elastic-moduli'
+        "
+      />
+
+      <StressStrainLab
+        v-else-if="
+          tab === 'lab' &&
+          type === 'stress-strain-curve'
+        "
+      />
+
+      <ApplicationsLab
+        v-else-if="
+          tab === 'lab' &&
+          type === 'applications-elasticity'
+        "
+      />
+
+      <PascalLab
+        v-else-if="
+          tab === 'lab' &&
+          type === 'pressure'
         "
       />
 
